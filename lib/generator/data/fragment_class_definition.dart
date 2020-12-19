@@ -52,4 +52,13 @@ class FragmentName extends Name with DataPrinter {
     }
     return '${normalizedName}Mixin';
   }
+
+  @override
+  String fragmentClassNameNormalize(String name) {
+    final normalizedName = ReCase(super.normalize(name)).pascalCase;
+    if (normalizedName.endsWith('Class')) {
+      return name;
+    }
+    return '${normalizedName}Class';
+  }
 }

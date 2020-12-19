@@ -124,6 +124,10 @@ Spec classDefinitionToSpec(
   final extendedClass = classes
       .firstWhere((e) => e.name == definition.extension, orElse: () => null);
 
+  if (definition.mixins.length == 1 && definition.properties.isEmpty) {
+    return null;
+  }
+
   return Class(
     (b) => b
       ..annotations
@@ -191,7 +195,16 @@ Spec fragmentClassDefinitionToSpec(FragmentClassDefinition definition) {
 
   return CodeExpression(Code('''mixin ${definition.name.namePrintable} {
   ${fields.join('\n')}
-}'''));
+}
+
+@JsonSerializable(explicitToJson: true)
+class ${definition.name.fragmentClassNamePrintable} with ${definition.name.namePrintable} {
+  factory ${definition.name.fragmentClassNamePrintable}.fromJson(Map<String, dynamic> json) =>
+      _\$${definition.name.fragmentClassNamePrintable}FromJson(json);
+  Map<String, dynamic> toJson() => _\$${definition.name.fragmentClassNamePrintable}ToJson(this);
+  ${definition.name.fragmentClassNamePrintable}();
+}
+'''));
 }
 
 /// Generates a [Spec] of a mutation argument class.
@@ -373,10 +386,17 @@ Spec generateLibrarySpec(LibraryDefinition definition) {
   final fragments = uniqueDefinitions.whereType<FragmentClassDefinition>();
   final classes = uniqueDefinitions.whereType<ClassDefinition>();
   final enums = uniqueDefinitions.whereType<EnumDefinition>();
+  classes.forEach((definition) {
+    if (definition.mixins.length == 1 && definition.properties.isEmpty) {
+      classMapping[definition.name.namePrintable] =
+          definition.mixins.first.fragmentClassNamePrintable;
+    }
+  });
 
   bodyDirectives.addAll(fragments.map(fragmentClassDefinitionToSpec));
-  bodyDirectives.addAll(
-      classes.map((cDef) => classDefinitionToSpec(cDef, fragments, classes)));
+  bodyDirectives.addAll(classes
+      .map((cDef) => classDefinitionToSpec(cDef, fragments, classes))
+      .where((element) => element != null));
   bodyDirectives.addAll(enums.map(enumDefinitionToSpec));
 
   for (final queryDef in definition.queries) {
@@ -393,10 +413,16 @@ Spec generateLibrarySpec(LibraryDefinition definition) {
   );
 }
 
+final classMapping = <String, String>{};
+
 /// Emit a [Spec] into a String, considering Dart formatting.
 String specToString(Spec spec) {
   final emitter = DartEmitter();
-  return DartFormatter().format(spec.accept(emitter).toString());
+  var code = DartFormatter().format(spec.accept(emitter).toString());
+  classMapping.forEach((key, value) {
+    code = code.replaceAll(key, value);
+  });
+  return code;
 }
 
 /// Generate Dart code typings from a query or mutation and its response from

@@ -1,55 +1,42 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'big_query.dart';
+part of 'fragment_query.graphql.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BigQuery$Query$Charmander _$BigQuery$Query$CharmanderFromJson(
+PokemonPartsMixinClass _$PokemonPartsMixinClassFromJson(
     Map<String, dynamic> json) {
-  return BigQuery$Query$Charmander()
+  return PokemonPartsMixinClass()
     ..number = json['number'] as String
+    ..name = json['name'] as String
     ..types = (json['types'] as List)?.map((e) => e as String)?.toList();
 }
 
-Map<String, dynamic> _$BigQuery$Query$CharmanderToJson(
-        BigQuery$Query$Charmander instance) =>
-    <String, dynamic>{
-      'number': instance.number,
-      'types': instance.types,
-    };
-
-BigQuery$Query$Pokemon$Evolutions _$BigQuery$Query$Pokemon$EvolutionsFromJson(
-    Map<String, dynamic> json) {
-  return BigQuery$Query$Pokemon$Evolutions()
-    ..number = json['number'] as String
-    ..name = json['name'] as String;
-}
-
-Map<String, dynamic> _$BigQuery$Query$Pokemon$EvolutionsToJson(
-        BigQuery$Query$Pokemon$Evolutions instance) =>
+Map<String, dynamic> _$PokemonPartsMixinClassToJson(
+        PokemonPartsMixinClass instance) =>
     <String, dynamic>{
       'number': instance.number,
       'name': instance.name,
+      'types': instance.types,
     };
 
-BigQuery$Query$Pokemon _$BigQuery$Query$PokemonFromJson(
+FragmentQuery$Query$Pokemon _$FragmentQuery$Query$PokemonFromJson(
     Map<String, dynamic> json) {
-  return BigQuery$Query$Pokemon()
+  return FragmentQuery$Query$Pokemon()
     ..number = json['number'] as String
     ..name = json['name'] as String
     ..types = (json['types'] as List)?.map((e) => e as String)?.toList()
     ..evolutions = (json['evolutions'] as List)
         ?.map((e) => e == null
             ? null
-            : BigQuery$Query$Pokemon$Evolutions.fromJson(
-                e as Map<String, dynamic>))
+            : PokemonPartsMixinClass.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
-Map<String, dynamic> _$BigQuery$Query$PokemonToJson(
-        BigQuery$Query$Pokemon instance) =>
+Map<String, dynamic> _$FragmentQuery$Query$PokemonToJson(
+        FragmentQuery$Query$Pokemon instance) =>
     <String, dynamic>{
       'number': instance.number,
       'name': instance.name,
@@ -57,32 +44,35 @@ Map<String, dynamic> _$BigQuery$Query$PokemonToJson(
       'evolutions': instance.evolutions?.map((e) => e?.toJson())?.toList(),
     };
 
-BigQuery$Query _$BigQuery$QueryFromJson(Map<String, dynamic> json) {
-  return BigQuery$Query()
+FragmentQuery$Query _$FragmentQuery$QueryFromJson(Map<String, dynamic> json) {
+  return FragmentQuery$Query()
     ..charmander = json['charmander'] == null
         ? null
-        : BigQuery$Query$Charmander.fromJson(
+        : PokemonPartsMixinClass.fromJson(
             json['charmander'] as Map<String, dynamic>)
     ..pokemons = (json['pokemons'] as List)
         ?.map((e) => e == null
             ? null
-            : BigQuery$Query$Pokemon.fromJson(e as Map<String, dynamic>))
+            : FragmentQuery$Query$Pokemon.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
-Map<String, dynamic> _$BigQuery$QueryToJson(BigQuery$Query instance) =>
+Map<String, dynamic> _$FragmentQuery$QueryToJson(
+        FragmentQuery$Query instance) =>
     <String, dynamic>{
       'charmander': instance.charmander?.toJson(),
       'pokemons': instance.pokemons?.map((e) => e?.toJson())?.toList(),
     };
 
-BigQueryArguments _$BigQueryArgumentsFromJson(Map<String, dynamic> json) {
-  return BigQueryArguments(
+FragmentQueryArguments _$FragmentQueryArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return FragmentQueryArguments(
     quantity: json['quantity'] as int,
   );
 }
 
-Map<String, dynamic> _$BigQueryArgumentsToJson(BigQueryArguments instance) =>
+Map<String, dynamic> _$FragmentQueryArgumentsToJson(
+        FragmentQueryArguments instance) =>
     <String, dynamic>{
       'quantity': instance.quantity,
     };
