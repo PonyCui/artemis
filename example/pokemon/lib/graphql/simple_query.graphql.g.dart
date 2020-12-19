@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'simple_query.dart';
+part of 'simple_query.graphql.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
