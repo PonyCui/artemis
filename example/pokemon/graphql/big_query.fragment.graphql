@@ -1,0 +1,44 @@
+fragment ListConnectionFragment on ListConnection {
+  items {
+    __typename
+    ... on ArticleListItem {
+      ...ArticleListItemFragment
+    }
+    ... on HouseListItem {
+      ...HouseListItemFragment
+    }
+  }
+}
+
+fragment ListFragment on List {
+  path
+  body {
+    ...ListConnectionFragment
+  }
+  pagination {
+    noData
+    noDataDescription
+    canRefresh
+    refreshPath
+    refreshToken
+    canLoadMore
+    loadMorePath
+    loadMoreToken
+  }
+  cacheControl {
+    cachePolicy
+    expiredDate
+  }
+}
+
+fragment ArticleListItemFragment on ArticleListItem {
+  id
+  articleStyle: style
+  flagTitle
+}
+
+fragment HouseListItemFragment on HouseListItem {
+  id
+  houseStyle: style
+  houseInfo
+}

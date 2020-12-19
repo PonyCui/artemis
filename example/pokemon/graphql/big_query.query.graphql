@@ -1,15 +1,15 @@
-query big_query($quantity: Int!) {
-  charmander: pokemon(name: "Charmander") {
-    number
-    types
-  }
-  pokemons(first: $quantity) {
-    number
-    name
-    types
-    evolutions: evolutions {
-      number
-      name
-    }
+query common_list(
+  $path: String!
+  $refreshToken: String
+  $loadMoreToken: String
+  $params: String
+) {
+  commonList(
+    path: $path
+    refreshToken: $refreshToken
+    loadMoreToken: $loadMoreToken
+    params: $params
+  ) {
+    ...ListFragment
   }
 }

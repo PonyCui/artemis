@@ -1,92 +1,2275 @@
-"""Represents a Pokémon's attack types"""
-type Attack {
-  """The name of this Pokémon attack"""
-  name: String
-
-  """The type of this Pokémon attack"""
-  type: String
-
-  """The damage of this Pokémon attack"""
-  damage: Int
+type ActionConnection {
+  isPlain: Boolean
+  items: [ActionItem]
 }
 
-"""Represents a Pokémon"""
-type Pokemon {
-  """The ID of an object"""
-  id: ID!
+union ActionItem = JumpActionItem | FavActionItem | GoHomeActionItem | EditContentActionItem | ShareContentActionItem | ReportContentActionItem | DeleteContentActionItem
 
-  """The identifier of this Pokémon"""
-  number: String
+type JumpActionItem {
+  title: String
+  icon: FileInfo
+  jump: JumpInfo
+}
 
-  """The name of this Pokémon"""
-  name: String
+type FavActionItem {
+  fav: FavInfo
+}
 
-  """The minimum and maximum weight of this Pokémon"""
-  weight: PokemonDimension
+type GoHomeActionItem {
+  title: String
+}
 
-  """The minimum and maximum weight of this Pokémon"""
-  height: PokemonDimension
+type EditContentActionItem {
+  title: String
+  contentId: String
+}
 
-  """The classification of this Pokémon"""
-  classification: String
+type ShareContentActionItem {
+  title: String
+  share: ShareInfo
+}
 
-  """The type(s) of this Pokémon"""
-  types: [String]
+type ReportContentActionItem {
+  title: String
+  contentId: String
+  authorNickname: String
+  contentTitle: String
+}
 
-  """The type(s) of Pokémons that this Pokémon is resistant to"""
-  resistant: [String]
+type DeleteContentActionItem {
+  title: String
+  contentId: String
+}
 
-  """The attacks of this Pokémon"""
-  attacks: PokemonAttack
-
-  """The type(s) of Pokémons that this Pokémon weak to"""
-  weaknesses: [String]
-  fleeRate: Float
-
-  """The maximum CP of this Pokémon"""
-  maxCP: Int
-
-  """The evolutions of this Pokémon"""
-  evolutions: [Pokemon]
-
-  """The evolution requirements of this Pokémon"""
-  evolutionRequirements: PokemonEvolutionRequirement
-
-  """The maximum HP of this Pokémon"""
-  maxHP: Int
+type ContentCatelogActionItem {
+  title: String
   image: String
+  jump: JumpInfo
 }
 
-"""Represents a Pokémon's attack types"""
-type PokemonAttack {
-  """The fast attacks of this Pokémon"""
-  fast: [Attack]
-
-  """The special attacks of this Pokémon"""
-  special: [Attack]
+type BottomActionConnection {
+  items: [BottomActionItem]
 }
 
-"""Represents a Pokémon's dimensions"""
-type PokemonDimension {
-  """The minimum value of this dimension"""
-  minimum: String
+union BottomActionItem = BottomFavActionItem | BottomCuttingLineItem | BottomEvaluateActionItem | BottomGoBuyActionItem
 
-  """The maximum value of this dimension"""
-  maximum: String
+type BottomFavActionItem {
+  fav: FavInfo
+  actionStatistic: StatisticInfo
 }
 
-"""Represents a Pokémon's requirement to evolve"""
-type PokemonEvolutionRequirement {
-  """The amount of candy to evolve"""
-  amount: Int
+type BottomCuttingLineItem {
+  colorStr: String
+}
 
-  """The name of the candy to evolve"""
+type BottomEvaluateActionItem {
+  id: String
+  listItem: ListItem
+  actionStatistic: StatisticInfo
+}
+
+type BottomGoBuyActionItem {
+  id: String
+  action: ButtonAction
+  actionStatistic: StatisticInfo
+}
+
+type ListConnection {
+  items: [ListItem]
+}
+
+union ListItem = HouseListItem | HouseLikeSelector | CommonSelector | BannerListItem | ArticleListItem | ArticleGroupListItem | ArticleGroupConnectionListItem | EntranceSetListItem | RecommendKOLListItem | DesignerListItem | ShortPostListItem | DesignerScoreListItem | StoreListItem | BrandListItem | UserListItem | TopicListItem | ReminderListItem | CommentListItem | MarkdownListItem | GoodsListItem | HouseSectionListItem | TitleListItem | MTestListItem | MTestV2ListItem | HouseWaterfallItem | ArticleWaterfallItem | ShortPostWaterfallItem | GoodsWaterfallItem | HouseSectionWaterfallItem | ImageBrowserListItem | BannerWaterfallItem | RelatedItemListItem | AppTipsListItem | DecorateCompanyRankingListItem | DecorateCompanyListItem | DecorateCompanySupervisionReportListItem | DecorateCompanySupervisionTestListItem
+
+enum PageCustomType {
+  NONE
+  LISTITEM_NO_FOLLOW_USER
+  LISTITEM_NO_BOTTOM_ACTION_BAR
+  LISTITEM_BOTTOM_SPLIT_LINE_BOLD
+  LISTITEM_CAN_TOCOME_TOP
+  LISTITEM_TOP_FLAG_TITLE
+  SHORT_POST_LISTITEM_LIMIT_3_PHOTOS
+  SHORT_POST_LISTITEM_NO_TOPIC
+  SHORT_POST_LISTITEM_SCORE
+  ARTICLE_LISTITEM_FAV_BUTTON
+  DISMISS_TIMESTAMP
+  LISTITEM_NO_FLAG_TITLE
+  BRAND_LIST_LISTITEM_NO_BOARD_LABEL
+  WATERFALL_ITEM_NO_BOTTOM_USER_BAR
+}
+
+type Page {
+  path: String
+  queryParams: String
+  topBar: PageComponent
+  content: PageContent
+  bottomBar: PageComponent
+  cacheControl: CacheControl
+  statistic: StatisticInfo
+  customType: [PageCustomType]
+  floating: ActionConnection
+}
+
+union PageContent = TabView | List | WebView
+
+
+# ## 通用页面组件类
+union PageComponent = SimpleAppBar | SearchAppBar | DetailPageBottomActionBar | SimpleBottomActionBar
+
+type SimpleAppBar {
+  title: String
+  actions: ActionConnection
+}
+
+type SearchAppBar {
+  currentKeyword: String
+  searchHits: EntranceSetListItem
+  searchPath: String
+  suggestionPath: String
+  recommendPath: String
+  isEntrance: Boolean
+  entranceJump: JumpInfo
+}
+
+type DetailPageBottomActionBar {
+  contentId: String
+}
+
+type SimpleBottomActionBar {
+  id: String
+  actions: BottomActionConnection
+}
+
+
+# ## 可左右切换的列表类
+enum TabStyle {
+  TOP_TAB_BAR
+  LEFT_TAB_BAR
+  HOME_TAB_BAR
+  DETAIL_PAGE_TAB_BAR
+  CENTER_TAB_BAR
+}
+
+type TabPage {
+  classname: String
+  name: String
+  icon: FileInfo
+  iconSelected: FileInfo
+  path: String
+  queryParams: String
+}
+
+type TabView {
+  style: TabStyle
+  header: ListConnection
+  pages: [TabPage]
+  selectedIndex: Int
+  footer: ListConnection
+}
+
+
+# ## 通用列表类（单列）
+type List {
+  path: String
+  body: ListConnection
+  pagination: Pagination
+  cacheControl: CacheControl
+  statistic: StatisticInfo
+}
+
+type WebView {
+  url: String
+}
+
+type Query {
+  
+  # 页面请求
+  commonPage(path: String!, queryParams: String): Page
+  commonList(path: String!, refreshToken: String, loadMoreToken: String, params: String): List
+  comment(commentId: String): Comment
+  comments(commentIds: [String]): [Comment]
+  contentInfoConnection(contentId: String): ContentInfoConnection
+  appSetting: AppSetting
+  refreshToken(refreshToken: String!): KeyValue
+  hotCity(fromType: String!): [KeyValue]
+  adAlert: BannerListItem
+  adLauncher: BannerListItem
+  alicloudUploadAuth(type: AlicloudUploadType!, isVideo: Boolean = false): AlicloudUploadAuth
+  commentListPage(id: String!, matchId: String, refreshToken: String, loadMoreToken: String, type: String): CommentListPage
+  askDesigner(userId: String, decorationId: String): AskDesigner
+  commonWordsList: CommonWordsList
+  initConversationDetail(userId: String, decorationId: String, conversationId: String): InitConversationDetail
+  designerAutoReply: String
+  decorateByUserId(userId: String): String
+  decorateSupervisor: String
+  decorationAutoReply(decorationId: String, type: String): Boolean
+  jumpToDeeplink(data: String): String
+  article(articleId: String): Article
+  articles(articleIds: [String]): [Article]
+  articleDetailPage(articleId: String!): ArticleDetailPage
+  brand(brandId: String): Brand
+  brands(brandIds: [String]): [Brand]
+  brandIntro(brandId: String): Brand
+  decorateCompanyRanking(adCode: String): DecorateCompanyRanking
+  decorateCompany(decorateCompanyId: String): DecorateCompany
+  decorateCompanys(decorateCompanyId: [String]): [DecorateCompany]
+  decorateCompanySupervisionReport(decorateCompanySupervisionReportId: String): DecorateCompanySupervisionReport
+  decorateCompanySupervisionReports(decorateCompanySupervisionReportIds: [String]): [DecorateCompanySupervisionReport]
+  designer(userId: String): Designer
+  goods(goodsId: String): Goods
+  goodses(goodsIds: [String]): [Goods]
+  goodsDetailPage(goodsId: String!): GoodsDetailPage
+  house(houseId: String): House
+  houses(houseIds: [String]): [House]
+  houseDailyPage(tag: String): HouseDailyPage
+  houseSectionDetailPage(matchId: String!): HouseSectionDetailPage
+  othersDeisgnerRecommend(talkWithDesignerId: String!): ListConnection
+  learningListPage: LearningListPage
+  mtest(mtestId: String!): MTestV2
+  mtestStatusPage(mtestId: String!): MTestStatusPage
+  mtestDetailPage(mtestId: String!): MTestDetailPage
+  mtestListItemPage(mtestId: String!): MTestV2ListItem
+  mtestApplyDetail(mtestId: String!): MTestApplyDetailPage
+  publishedHouseTags: HouseTagGroup
+  publishedHouseInfo(houseId: String): PublishedHouseInfo
+  publishedHouseSections(houseId: String!, spaceName: String!): [PublishedHouseSection]
+  queryGoodsInfo(info: String!, custom: Boolean): GoodsListItem
+  deleteGoodsInfo(goodsId: String!): Boolean
+  publishedShortPostInfo(shortPostId: String!): PublishedShortPostInfo
+  publishedArticleInfo(articleId: String!): PublishedArticleInfo
+  queryArticleImageId(url: String!): String
+  messageRemindDetail: MessageRemindDetail
+  shortPost(shortPostId: String): ShortPost
+  shortPosts(shortPostIds: [String]): [ShortPost]
+  shortPostDetailPage(shortPostId: String!): ShortPostDetailPage
+  shortPostSimilarVideoPage(shortPostId: String!, loadMoreToken: String): ShortPostSimilarVideoPage
+  store(storeId: String): Store
+  stores(storeIds: [String]): [Store]
+  superEditorRankList(content: String, userId: String): SuperEditorRankList
+  
+  # superEditorActivityDetailQuery(
+  #   content: String
+  #   userId: String
+  # ): SuperEditorActivityDetailQuery
+  superEditorActivityGridQuery(content: String, userId: String, beginTime: String, endTime: String): SuperEditorActivityGridQuery
+  superEditorPage(path: String!): SuperEditorPage
+  superEditorPages(prefix: String): [SuperEditorPage]
+  superEditorActivityWaterfallQuery(content: String, shortpost_ids: [String], loadMoareData: String, refreshData: String): SuperEditorActivityDetailQuery
+  superEditorDialogOptionValue(content: String): SuperEditorDialogOptionValue
+  superEditorDoTask(contentTypeID: String, contentID: String, taskAction: String): Boolean
+  topic(topicId: String): Topic
+  topics(topicIds: [String]): [Topic]
+  topicDetailPage(topicId: String): TopicDetailPage
+  user(userId: String): User
+  users(userIds: [String]): [User]
+  userBadgesWallPage(userId: String!): UserBadgesWallPage
+  userDetailPage(userId: String!): UserDetailPage
+  viewer: User
+  unreadCount: UnreadCount
+  viewerDecorationDocumentPage(userId: String!): DecorationDocumentPage
+}
+
+type Mutation {
+  _: Boolean
+  addFollow(userId: String!): Boolean
+  addFollows(userIds: String!): Boolean
+  removeFollow(userId: String!): Boolean
+  addFav(favId: String!): Boolean
+  removeFav(favId: String!): Boolean
+  addZan(zanId: String!): Boolean
+  removeZan(zanId: String!): Boolean
+  addComment(contentId: String!, message: String!, quoteId: String): Boolean
+  removeComment(commentId: String!, message: String!): Boolean
+  removeContent(contentId: String!): Boolean
+  becomeTop(contentId: String): Boolean
+  uploadStatistics(data: String): Boolean
+  clearUnread(type: String): ClearUnread
+  rejectMessage(isBan: String, userId: String): RejectMessage
+  rejectUserList(userIds: [String]): RejectUserList
+  extraResult: ExtraResult
+  removeDraft(draftId: String!): Boolean
+  setCommonWords(content: String, editID: Int): Boolean
+  editAutoReply(reply: String!): Boolean
+  remarkHavenTalkDesigner(talkWithDesignerId: String!): Boolean
+  sendDocumentToDesigner(fromDesignerId: String!, toDesignerIds: String!): Boolean
+  clearReadHistory: Boolean
+  mtestApply(input: MTestApplyInput!): MTestExecutedRep
+  mtestConfirm(input: MTestConfirmInput!): MTestExecutedRep
+  mtestPay(input: MTestPayInput!): MTestExecutedRep
+  publishHouse(input: PublishedHouseInfoInput!, isDraft: Boolean!): Boolean
+  publishHouseAddSpace(input: PublishedHouseInfoInput!, spaceName: String!): PublishedHouseInfoSpace
+  publishHouseDeleteSpace(houseId: String!, spaceName: String!): Boolean
+  publishHouseUpdateSpace(houseId: String!, oldSpaceName: String!, newSpaceName: String!): Boolean
+  publishHouseSortSpace(houseId: String!, spaceNames: String!): Boolean
+  publishHouseAddSection(input: [PublishedHouseSectionInput]!, houseId: String!, sectionName: String!): Boolean
+  publishHouseUpdateSection(input: PublishedHouseSectionInput!): Boolean
+  publishHouseDeleteSection(sectionId: String!): Boolean
+  publishHouseSortSection(houseId: String!, sectionIds: String!): Boolean
+  publishHouseUpdateCover(houseId: String!, imagePath: String!): FileInfo
+  publishShortPost(input: PublishShortPostInput!): String
+  userAddBrand(name: String!): BrandListItem
+  publishArticle(input: PublishArticleInput!): String
+  saveArticleDraft(input: SaveArticleDraftInput!, forceSave: String): String
+  report(input: ReportInput!): ReportRep
+  feedback(input: FeedBackInput!): Boolean
+  watermark(display: Boolean!, position: WatermarkPosition!): Boolean
+  sendPhoneCode(mobile: String!): Boolean
+  rebindPhone(mobile: String!, password: String, code: String!, forceRebind: Boolean!): Boolean
+  editUserAvatar(imgUrl: String!): Boolean
+  editUserBackground(imgUrl: String!): Boolean
+  editUserNickname(userId: String!, newValue: String!): Boolean
+  editUserBio(userId: String!, newValue: String!): Boolean
+  editUserGender(userId: String!, newValue: String!): Boolean
+  editUserBirthday(userId: String!, newValue: String!): Boolean
+  editUserCity(userId: String!, newValue: String!): Boolean
+  editUserBind(userId: String!, newValue: String!, rebind: String!): Boolean
+  messageRemind(optionName: String!, status: String!): Boolean
+  saveSuperEditorPage(path: String!, data: String!): Boolean
+  updateDecorationDocument(input: DecorationDocumentArchiveInput!): DecorationDocumentArchive
+  updateDecorationDemand(input: DecorationDocumentArchiveInput!): DecorationDocumentArchive
+  updateDecorationUpdate(input: DecorationDocumentArchiveInput!): DecorationDocumentArchive
+}
+
+
+# ## Key(String) -> Value(String)
+type KeyValue {
+  key: String
+  value: String
+  extJSON: String
+}
+
+
+# ## 文件（图片）信息
+type FileInfo {
+  id: String
+  url: String
+  videoFirstFrame: String
+  videoUrl: String
+  videoDuration: Int
+  fileType: FileType
+  width: Int
+  height: Int
+  title: String
+  spots: [FileImageSpotInfo]
+  watermark: String
+  watermarkAlign: WatermarkAlign
+  videoJump: JumpInfo
+}
+
+
+# ## 图片上的标签，点击标签可跳转
+type FileImageSpotInfo {
+  x: Int
+  y: Int
+  keyword: String
+  subTitle: String
+  jump: JumpInfo
+}
+
+enum FileType {
+  IMAGE
+  VIDEO
+}
+
+enum WatermarkAlign {
+  RIGHTBOTTOM
+  CENTER
+}
+
+
+# ## 收藏信息（在数据库里，like 表示收藏的意思，不要被坑了！）
+type FavInfo {
+  id: String
+  count: Int
+  viewerHasFav: Boolean
+  statistic: StatisticInfo
+}
+
+
+# ## 点赞信息（在数据库里，zan 表示点赞的意思，不要和收藏那里的 like 给混淆了！）
+type ZanInfo {
+  id: String
+  count: Int
+  viewerHasZan: Boolean
+  statistic: StatisticInfo
+}
+
+
+# ## 评论信息
+type CommentInfo {
+  id: String
+  count: Int
+  viewerHasComment: Boolean
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ## 分享信息
+type ShareInfo {
+  id: String
+  data: String
+  platforms: [SharePlatform]
+  needLogin: Boolean
+  statistic: StatisticInfo
+}
+
+enum SharePlatform {
+  WxFriend
+  WxCircle
+  QQ
+  Card
+  WeiBo
+  Browser
+  CopyLink
+  Others
+}
+
+
+# ## 内容信息集合
+type ContentInfoConnection {
+  fav: FavInfo
+  zan: ZanInfo
+  comment: CommentInfo
+  share: ShareInfo
+}
+
+
+# ## 跳转信息
+type JumpInfo {
+  requireLogin: Boolean
+  deeplink: String
+  dialog: JumpDialog
+}
+
+enum JumpDialogType {
+  BOTTOM
+  CENTER
+}
+
+type JumpDialog {
+  type: JumpDialogType
+  width: Float
+  height: Float
+}
+
+
+# ## 分页信息
+type Pagination {
+  noData: Boolean
+  noDataDescription: String
+  canRefresh: Boolean
+  refreshPath: String
+  refreshToken: String
+  canLoadMore: Boolean
+  loadMorePath: String
+  loadMoreToken: String
+}
+
+
+# ## 位置信息
+type LocationInfo {
+  lon: Float
+  lat: Float
+  poi: String
+  distance: Float
+}
+
+
+# ## 缓存信息
+enum CachePolicy {
+  NEVER
+  USE_LOCAL
+  USE_LOCAL_LOAD_REFRESH
+  USE_LOCAL_LOAD_REMOTE
+}
+
+type CacheControl {
+  cachePolicy: CachePolicy
+  expiredDate: Int
+}
+
+enum StatisticEventType {
+  NONE
+  PAGE_INIT
+  PAGE_ENTER
+  PAGE_EXIT
+  PAGE_REF
+  DISPLAY
+  CLICK
+  SHOW_ORDER
+}
+
+type StatisticInfo {
+  eventParams: String
+  eventType: [StatisticEventType]
+}
+
+
+# ## 通用配置
+type AppSetting {
+  userPageTotalCountText: String
+  userPrivateProtocol: String
+  viewerCanPost: CanPostType
+  viewerHasBindPhone: Boolean
+  viewerLoginedPassed: Boolean
+  viewerLocationProvince: String
+  viewerLocationCity: String
+  viewerLocationAddressCode: String
+  adLauncher: BannerListItem
+}
+
+type CanPostType {
+  loginPC: Boolean
+  photo: Boolean
+  article: Boolean
+  house: Boolean
+  evaluate: Boolean
+  video: Boolean
+  live: Boolean
+  videoMinSeconds: Int
+  videoMinErrorTip: String
+  videoMaxSeconds: Int
+  videoMaxErrorTip: String
+}
+
+type ButtonAction {
+  id: String
+  text: String
+  disable: Boolean
+  disableTips: String
+  jump: JumpInfo
+}
+
+type Comment {
+  id: String
+  ownerId: String
+  ownerAuthor: User
+  author: User
+  content: String
+  publishedDate: Int
+  zan: ZanInfo
+  quoteAuthor: User
+  quoteMessage: String
+  sourceText: String
+  forMatchImage: String
+  forMatchImageFile: FileInfo
+}
+
+type ExtraResult {
+  tipsForTangDou: String
+}
+
+enum AlicloudUploadType {
+  SHORTPOST
+  HOUSESECTION
+  ARTICLE
+  USER
+  NORMAL
+}
+
+type AlicloudUploadAuth {
+  accessKeyId: String
+  accessKeySecret: String
+  securityToken: String
+  bucketName: String
+  endpoint: String
+  path: String
+  expires: Int
+}
+
+
+# ## 通栏广告
+enum BannerListItemStyle {
+  FULL_WIDTH
+  ITEM_WIDTH
+}
+
+type BannerListItem {
+  id: String
+  style: BannerListItemStyle
+  nodes: [BannerListNodeItem]
+  aspectRatio: Float
+  bannerHeight: Float
+  closable: Boolean
+  closePrompt: String
+}
+
+type BannerListNodeItem {
+  id: String
+  image: FileInfo
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+type BannerWaterfallItem {
+  id: String
+  image: FileInfo
+  flagTitle: String
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ## 通用筛选框
+type CommonSelector {
+  allGroups: [CommonSelectorGroup]
+}
+
+enum CommonSelectorGroupStyle {
+  LIST
+  GRID
+}
+
+type CommonSelectorGroup {
+  title: String
+  style: CommonSelectorGroupStyle
+  options: [String]
+  multiple: Boolean
+  defaultValue: String
+  selectedValues: [String]
+}
+
+enum HouseLikeSelectorStyle {
+  HOUSE_LIKE
+  ACTION
+}
+
+
+# ## 类似全屋记样式的筛选框
+type HouseLikeSelector {
+  style: HouseLikeSelectorStyle
+  keys: [String]
+  values: [[String]]
+  selectedValues: [String]
+  hasCitySelector: Boolean
+  currentCity: String
+  hasSortSelector: Boolean
+  currentOrder: String
+}
+
+
+# ## 消息角标
+enum MessageBadgeStyle {
+  POINT
+  VALUE
+}
+
+type MessageBadge {
+  style: MessageBadgeStyle
+  value: String
+}
+
+
+# ## 入口集合单行信息
+enum EntranceSetStyle {
+  REGULAR
+  SINGLE_LINE
+  JING_GANG
+  RELATED_ZHUANTI
+  RELATED_GOODS
+}
+
+type EntranceSetListItem {
+  id: String
+  style: EntranceSetStyle
+  items: [EntranceItem]
+  jump: JumpInfo
+}
+
+type EntranceItem {
+  id: String
+  icon: FileInfo
+  color: String
+  badge: MessageBadge
+  title: String
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+enum TitleListItemStyle {
+  LEFT_TITLE
+  CENTER_TITLE
+  IN_CONTENT
+}
+
+type TitleListItem {
+  id: String
+  style: TitleListItemStyle
+  title: String
+  titleJump: JumpInfo
+  subTitle: String
+  moreTitle: String
+  moreJump: JumpInfo
+}
+
+enum MarkdownListItemStyle {
+  NORMAL
+  BLOCK_QUOTE
+}
+
+
+# ## Markdown 列表项
+type MarkdownListItem {
+  content: String
+  style: MarkdownListItemStyle
+}
+
+enum ImageBrowserListItemStyle {
+  FULL_WIDTH
+  HOUSE_DETAIL
+  VIDEO_IN_DETAIL
+  HOUSE_SECTION
+  SHORT_POST_TOP
+  DONT_JUMP
+}
+
+
+# ## 通用通栏图片浏览器
+type ImageBrowserListItem {
+  id: String
+  items: [FileInfo]
+  aspectRatio: Float
+  maxHeight: Float
+  displayImageTitle: Boolean
+  inMarkdown: Boolean
+  style: ImageBrowserListItemStyle
+}
+
+type CommentListPage {
+  id: String
+  matchId: String
+  title: String
+  subTitle: String
+  body: [CommentListItem]
+  bodyList: ListConnection
+  pagination: Pagination
+  noDataDescription: String
+  noData: Boolean
+  statistic: StatisticInfo
+}
+
+
+# ## 评论列表
+type CommentListItem {
+  id: String
+  comment: Comment
+}
+
+type RelatedItemListItem {
+  id: String
+  items: [ListItem]
+  jump: JumpInfo
+}
+
+
+# ## 应用提示信息
+type AppTipsListItem {
+  image: FileInfo
+  title: String
+  requireLogin: Boolean
+}
+
+type Article {
+  id: String
+  author: User
+  title: String
+  summary: String
+  cover: FileInfo
+  fav: FavInfo
+  zan: ZanInfo
+  comment: CommentInfo
+  goodsCount: Int
+  viewsCount: Int
+  publishedDate: Int
+  updatedDate: Int
+  jump: JumpInfo
+  share: ShareInfo
+}
+
+
+# ## 文章列表单行信息
+enum ArticleListItemStyle {
+  DOUBLE_COLUMNS
+  DOUBLE_COLUMNS_TRIPLE_ROWS
+}
+
+type ArticleListItem {
+  id: String
+  style: ArticleListItemStyle
+  article: Article
+  flagTitle: String
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+type ArticleGroupListItem {
+  id: String
+  title: String
+  moreTitle: String
+  moreJump: JumpInfo
+  articleItems: [ArticleListItem]
+  relateItems: [ArticleGroupRelateItem]
+}
+
+type ArticleGroupConnectionListItem {
+  items: [ArticleGroupListItem]
+}
+
+type ArticleGroupRelateItem {
+  id: String
+  title: String
+  icon: FileInfo
+  jump: JumpInfo
+}
+
+type ArticleWaterfallItem {
+  id: String
+  article: Article
+  flagTitle: String
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ### 文章内页
+type ArticleDetailPage {
+  id: String
+  article: Article
+  relatedBrands: [BrandListItem]
+  moreBrandButtonAction: ButtonAction
+  commentShowTitle: String
+  commentShowList: [CommentListItem]
+  moreCommentButtonAction: ButtonAction
+  relatedArticles: [ArticleListItem]
+  statistic: StatisticInfo
+}
+
+type Brand {
+  id: String
+  name: String
+  logo: FileInfo
+  headerImage: FileInfo
+  introduceText: String
+  isVerified: Boolean
+  boardLabel: String
+  boards: [EntranceItem]
+  numberOfContents: Int
+  numberOfViews: Int
+  itemCategories: [String]
+  jump: JumpInfo
+  share: ShareInfo
+  certificationTips: BrandCertificationTips
+  buyInfo: BrandBuyInfo
+  relatedShortPostNum: Int
+  relatedGuideNum: Int
+  relatedCaseNum: Int
+  country: String
+  createTime: String
+  category: String
+  special: String
+  simpleIntro: String
+  fav: FavInfo
+  shareCardBuyChannel: [String]
+  relatedEvaluationNum: Int
+}
+
+type BrandCertificationTips {
+  tipTitle: String
+  tipDetail: String
+  jumpTitle: String
+  jump: JumpInfo
+}
+
+type BrandBuyInfo {
+  title: String
+  enabled: Boolean
+  disabledTips: String
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ## 品牌单行信息
+enum BrandListItemStyle {
+  SEARCH
+  MARKDOWN
+  MULTI_ITEM
+  
+  # ### @deprecated v5.0.9
+  SEARCH_PUBLISHER
+  MULTI_ITEM_PUBLISHER
+}
+
+type BrandListItem {
+  id: String
+  style: BrandListItemStyle
+  brand: Brand
+  subTitle: String
+  flagTitles: [String]
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ### 个人资料内页
+type BandListPublisher {
+  id: String
+  content: TabView
+  tangdouJump: JumpInfo
+  statistic: StatisticInfo
+}
+
+type DecorateCompanyRanking {
+  id: String
+  tag: String
+  title: String
+  cityName: String
+  introduction: String
+  icon: FileInfo
+  headerImage: FileInfo
+  shareImage: FileInfo
+  brandCompareImage: FileInfo
+  shareIntroduction: String
+  shareTitle: String
+  contentCount: String
+  share: ShareInfo
+  ruleDetailPageJump: JumpInfo
+}
+
+type DecorateCompany {
+  id: String
+  logo: FileInfo
+  name: String
+  isVerified: Boolean
+  price: String
+  address: String
+  createDate: String
+  scale: String
+  introduction: String
+  contentCount: Int
+  headerImage: FileInfo
+  aboutAttrs: [KeyValue]
+  rankInfo: DecorateCompanyRankInfo
+  area: String
+  decorateMode: String
+  share: ShareInfo
+  fav: FavInfo
+  relationUserId: String
+  boardLabel: String
+  superviseDialogTips: String
+  superviseDialogJumpDeepLink: String
+  disableTips: String
+}
+
+type DecorateCompanyRankInfo {
+  score: Float
+  ranking: Int
+  rankAttrs: [KeyValue]
+  boardTitle: String
+}
+
+type DecorateCompanySupervisionReport {
+  id: String
+  name: String
+  score: Float
+  area: String
+  description: String
+  tests: [DecorateCompanySupervisionTest]
+  covers: [FileInfo]
+}
+
+type DecorateCompanySupervisionTest {
+  id: String
+  name: String
+  summary: String
+  score: String
+  images: [FileInfo]
+}
+
+
+# ###  @deprecated v5.0.7 please use DecorateCompanyListItem
+type DecorateCompanyRankingListItem {
+  id: String
+  decorateCompany: DecorateCompany
+  statistic: StatisticInfo
+  jump: JumpInfo
+}
+
+enum DecorateCompanyListItemStyle {
+  
+  # ###  @deprecated v5.0.9
+  SEARCH
+  
+  # ###  @deprecated v5.0.9
+  SEARCH_PUBLISHER
+  MARKDOWN
+  RANKING
+  MULTI_ITEM
+  MULTI_ITEM_PUBLISHER
+}
+
+type DecorateCompanyListItem {
+  id: String
+  decorateCompany: DecorateCompany
+  subTitle: String
+  statistic: StatisticInfo
+  jump: JumpInfo
+  style: DecorateCompanyListItemStyle
+  recommendedTags: [String]
+  recommendedReasons: String
+}
+
+type DecorateCompanySupervisionReportListItem {
+  id: String
+  supervisionReport: DecorateCompanySupervisionReport
+  statistic: StatisticInfo
+  jump: JumpInfo
+}
+
+type DecorateCompanySupervisionTestListItem {
+  id: String
+  supervisionTest: DecorateCompanySupervisionTest
+  statistic: StatisticInfo
+}
+
+enum DesignerType {
+  ALL
+  PERSONAL
+  COMPANY
+  DECO_COMPANY
+}
+
+type Designer {
+  id: String
+  name: String
+  designerType: DesignerType
+  verified: Boolean
+  serviceInfoAttrs: [KeyValue]
+  topHouses: [HouseListItem]
+  topHouseListJump: JumpInfo
+  relatedHouses: [HouseListItem]
+  relatedHouseListJump: JumpInfo
+  relatedArticles: [ArticleListItem]
+  relatedArticleListJump: JumpInfo
+  relatedEvaluates: [ShortPostListItem]
+  relatedEvaluateListJump: JumpInfo
+  modifyProfileJump: JumpInfo
+  serviceEndTime: Int
+  jumpVerifiedApply: JumpInfo
+}
+
+
+# ## 设计师卡片
+type DesignerListItem {
+  user: User
+  designer: Designer
+  subTitle: String
+  tags: [String]
+  images: [FileInfo]
+  jump: JumpInfo
+  statistic: StatisticInfo
+  style: DesignerListItemStyle
+}
+
+enum DesignerListItemStyle {
+  NORMAL
+  MARKDOWN
+  SHORT_POST
+}
+
+
+# ## 商品
+type Goods {
+  id: String
+  sharingId: String
+  name: String
+  cover: FileInfo
+  price: String
+  flagIcon: FileInfo
+  fav: FavInfo
+  jump: JumpInfo
+  share: ShareInfo
+  buyInfo: BrandBuyInfo
+  itemDetail: String
+  store: Store
+  brand: Brand
+  boughtUser: [User]
+}
+
+type GoodsBuyInfo {
+  title: String
+  enabled: Boolean
+  disabledTips: String
+  buyChannelCount: Int
+  jump: JumpInfo
+}
+
+enum GoodsListItemStyle {
+  MARKDOWN
+  MULTI_ITEM
+  MULTI_ITEM_PUBLISHER
+}
+
+type GoodsListItem {
+  id: String
+  style: GoodsListItemStyle
+  goods: Goods
+  jump: JumpInfo
+  statistic: StatisticInfo
+  store: Store
+  brand: Brand
+  isOfficial: Boolean
+}
+
+type GoodsWaterfallItem {
+  id: String
+  goods: Goods
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+type GoodsDetailPage {
+  info: GoodsDetailInfo
+  goods: Goods
+  goToBuy: ButtonAction
+  goToEvaluate: ButtonAction
+  fromStores: [StoreListItem]
+  evaluatesDisplayCount: String
+  evaluates: [ShortPostListItem]
+  articlesDisplayCount: String
+  articles: [ArticleListItem]
+  goodsSameDisplayCount: String
+  goodsSame: [GoodsWaterfallItem]
+  goodsNearDisplayCount: String
+  goodsNear: [GoodsWaterfallItem]
+  statistic: StatisticInfo
+}
+
+type GoodsDetailInfo {
+  banner: BannerListItem
+  title: String
+  subTitle: String
+  price: EntranceSetListItem
+  parameters: [KeyValue]
+  fromBrand: BrandListItem
+}
+
+
+# ## 达人推荐
+type RecommendKOLListItem {
+  id: String
+  style: RecommendKOLListItemStyle
+  nodes: [RecommendKOLListNodeItem]
+}
+
+type RecommendKOLListNodeItem {
+  user: User
+  recommendReason: String
+  title: String
+  subTitle: String
+  images: [FileInfo]
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+enum RecommendKOLListItemStyle {
+  KOL
+  DESIGNER
+}
+
+type House {
+  id: String
+  cover: FileInfo
+  title: String
+  summary: String
+  author: User
+  fav: FavInfo
+  zan: ZanInfo
+  comment: CommentInfo
+  jump: JumpInfo
+  share: ShareInfo
+  publishedDate: Int
+  updatedDate: Int
+  designerId: String
+  category: [String]
+  relatedSharingsBrands: [ListItem]
+}
+
+enum HouseListItemStyle {
+  DOUBLE_ROWS
+  TRIPLE_ROWS
+}
+
+type HouseListItem {
+  id: String
+  style: HouseListItemStyle
+  house: House
+  flagTitle: String
+  isTop: Boolean
+  jump: JumpInfo
+  statistic: StatisticInfo
+  houseInfo: String
+}
+
+type HouseWaterfallItem {
+  id: String
+  house: House
+  coverMainHue: String
+  flagIcon: FileInfo
+  flagTitle: String
+  dailyHouse: Int
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ### 每日屋主
+type HouseDailyPage {
+  tags: [String]
+  currentTag: String
+  title: String
+  subTitle: String
+  tipsTitle: String
+  tipsJump: JumpInfo
+  sections: [HouseDailySection]
+  statistic: StatisticInfo
+}
+
+type HouseDailySection {
+  title: String
+  date: Int
+  items: [HouseDailyItem]
+}
+
+type HouseDailyItem {
+  title: String
+  flagTitle: String
+  cover: FileInfo
+  date: Int
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ## 全屋记内页
+type HouseDetailPage {
+  id: String
+  house: House
+  category: [String]
+  statistic: StatisticInfo
+}
+
+
+# ### 全屋记图片
+type HouseSection {
+  id: String
+  text: String
+  markdownContent: String
+  cover: FileInfo
+  author: User
+  space: String
+  fav: FavInfo
+  zan: ZanInfo
+  comment: CommentInfo
+  share: ShareInfo
+  jump: JumpInfo
+}
+
+type HouseSectionListItem {
+  id: String
+  houseSection: HouseSection
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+type HouseSectionWaterfallItem {
+  id: String
+  houseSection: HouseSection
+  flagIcon: FileInfo
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ### 全屋记图片内页
+type HouseSectionDetailPage {
+  id: String
+  houseSection: HouseSection
+  statistic: StatisticInfo
+}
+
+type AskDesigner {
+  userId: String
+  firstCommunication: Boolean
+  jump: JumpInfo
+}
+
+type CommonWordsList {
+  content: [CommonWordsListItem]
+}
+
+type CommonWordsListItem {
+  title: String
+  deeplink: String
+  icon: FileInfo
+  id: Int
+}
+
+type InitConversationDetail {
+  designerAutoReply: DesignerAutoReply
+  users: [User]
+  decorateSupervisor: String
+  rejectUserList: RejectUserList
+  conversationForbidden: ConversationForbidden
+  messageCollection: MessageCollection
+  extensionControlCollection: [ExtensionControlItem]
+  hasDecorationDemand: Boolean
+  commonWordsList: [CommonWordsListItem]
+}
+
+type ExtensionControlItem {
+  title: String
+  id: String
+  jump: JumpInfo
+  statisticButtonName: String
+  statisticButtonPosition: String
+}
+
+type MessageCollection {
+  
+  # SYSTEM_SEND_ENTRANCE_WITH_NO_ARCHIVE_INFO: String
+  systemSendEntranceWithArchiveInfo: String
+  designerApplyArchiveInfo: String
+  designerApplyNoneArchiveInfo: String
+  designerApplyArchiveInfoChangeReject: String
+  designerApplyArchiveInfoChangeAgree: String
+  designerApplyAgreeResponse: String
+  designerApplyRejectedResponse: String
+  desginerServiceInfoAutoReply: String
+  userSendArchiveInfo: String
+}
+
+type ConversationForbidden {
+  isForbidden: Boolean
+  forbiddenDesc: String
+}
+
+type ISConversationForbidden {
+  isForbidden: Boolean
+  forbiddenDesc: String
+}
+
+type DesignerAutoReply {
+  serviceArea: String
+  autoReplyMessage: String
+  price: String
+}
+
+type ClearUnread {
+  type: String
+  success: String
+}
+
+type RejectMessage {
+  isBan: String
+  desc: String
+  success: String
+}
+
+type RejectUserList {
+  isBan: String
+  success: String
+  ban: [RejectUser]
+}
+
+type RejectUser {
+  userId: String
+  isBan: Boolean
+}
+
+
+# ### 学装修页
+type LearningListPage {
+  nav: [LearningGuideItem]
+  sections: [LearningGuideSection]
+  bottomGuide: EntranceItem
+  cacheControl: CacheControl
+  statistic: StatisticInfo
+}
+
+type LearningGuideSection {
+  title: String
+  items: [LearningGuideItem]
+}
+
+type LearningGuideItem {
+  title: String
+  image: FileInfo
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+enum MTestStatus {
+  PENDING
+  APPLYING
+  APPLY_OVER
+  TEST_OVER
+  EXPERIENCING
+}
+
+type MTest {
+  id: String
+  title: String
+  tag: String
+  image: FileInfo
+  amounts: Int
+  price: String
+  numberOfApplicants: Int
+  status: MTestStatus
+  jump: JumpInfo
+}
+
+
+# ### V2-重构项目 ####
+enum MTestV2Type {
+  MTEST
+  LIGHTMTEST
+}
+
+enum MTestV2Status {
+  ALL
+  NOTSTARTED
+  APPLICATION
+  CONFIRMATION
+  EXPERIENCE
+  OVER
+}
+
+enum MTestV2UserStage {
+  UNSELECTED
+  TOBECONFIRMED
+  CONFIRMEDPAID
+  PAIDFORREVIEW
+  PARTICIPATED
+  ABANDONED
+}
+
+type MTestV2 {
+  id: String
+  title: String
+  cover: FileInfo
+  images: [FileInfo]
+  type: MTestV2Type
+  status: MTestV2Status
+  userStage: MTestV2UserStage
+  peopleNumber: Int
+  applyNumber: Int
+  quota: Int
+  price: String
+  hasApply: Boolean
+  weixinAccount: String
+  alipayAccount: String
+  brandId: Int
+  itemId: Int
+  share: ShareInfo
+}
+
+input MTestApplyInput {
+  mtestId: String
+  userName: String
+  address: String
+  weixin: String
+  phone: String
+  reason: String
+  pictures: [String]
+}
+
+enum MTestConfirmStatus {
+  GIVEUP
+  CONFIRM
+}
+
+input MTestConfirmInput {
+  mtestId: String
+  userStage: MTestConfirmStatus
+}
+
+input MTestPayInput {
+  mtestId: String
+  orderPictures: [String]
+  orderNumber: String
+}
+
+type MTestExecutedRep {
+  error: Boolean
+  message: String
+}
+
+
+# ## 众测
+type MTestListItem {
+  id: String
+  mtest: MTest
+  jump: JumpInfo
+}
+
+
+# ### V2-重构项目 ####
+type MTestV2ListItem {
+  id: String
+  mtest: MTestV2
+  jumpTitle: String
+  smallTagLogo: FileInfo
+  bigTagLogo: FileInfo
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+type MTestDetailPage {
+  buttons: EntranceSetListItem
+  leftTimeTip: String
+}
+
+type MTestStatusPage {
+  mtest: MTestV2
+  logo: FileInfo
+  title: String
+  subTitle: String
+  markdownDesc: String
+  buttons: EntranceSetListItem
+  orderNumber: String
+  orderPictures: [String]
+  statistic: StatisticInfo
+}
+
+type MTestApplyDetailPage {
+  hasApply: Boolean
+  reason: String
+  pictures: [String]
+  userName: String
+  address: String
+  weixin: String
+  phone: String
+  statistic: StatisticInfo
+}
+
+type HouseTag {
+  title: String
+  value: String
+}
+
+type HouseTagGroup {
+  houseType: [HouseTag]
+  style: [HouseTag]
+  sex: [HouseTag]
+}
+
+type PublishedHouseInfo {
+  houseId: String
+  hasPublish: Boolean
+  title: String
+  provinceAdCode: String
+  provinceName: String
+  cityAdCode: String
+  cityName: String
+  original: Boolean
+  cover: FileInfo
+  houseTypeTag: HouseTag
+  styleTag: HouseTag
+  relateDesignerId: String
+  relateDesignerName: String
+  areaNum: String
+  budgetNum: String
+  userProfession: String
+  userProfile: String
+  userAge: String
+  preWord: String
+  endWord: String
+  spaces: [PublishedHouseInfoSpace]
+}
+
+type PublishedHouseInfoSpace {
+  spaceId: String
+  icon: FileInfo
+  title: String
+  canModify: Boolean
+  sections: [PublishedHouseSection]
+}
+
+type PublishedHouseSection {
+  id: String
+  content: String
+  relatedItems: RelatedItemListItem
+  image: FileInfo
+  imageData: PublishHouseFileImage
+}
+
+type PublishHouseFileImage {
+  id: String
+  url: String
+  width: Int
+  height: Int
+  spots: [PublishHouseFileImageSpotInfo]
+}
+
+type PublishHouseFileImageSpotInfo {
+  x: Int
+  y: Int
+  subTitle: String
+}
+
+input HouseTagInput {
+  title: String
+  value: String
+}
+
+input HouseTagGroupInput {
+  name: String
+  key: String
+  tags: [HouseTagInput]
+}
+
+input PublishedHouseInfoInput {
+  houseId: String
+  title: String
+  provinceAdCode: String
+  provinceName: String
+  cityAdCode: String
+  cityName: String
+  original: Boolean
+  houseTypeTag: HouseTagInput
+  styleTag: HouseTagInput
+  relateDesignerId: String
+  relateDesignerName: String
+  areaNum: String
+  budgetNum: String
+  userProfession: String
+  userProfile: String
+  userAge: String
+  preWord: String
+  endWord: String
+  spaces: [PublishedHouseInfoSpaceInput]
+}
+
+input PublishedHouseInfoSpaceInput {
+  spaceId: String
+  title: String
+  canModify: Boolean
+  sections: [PublishedHouseSectionInput]
+}
+
+input PublishedHouseSectionInput {
+  id: String
+  content: String
+  relatedItemIds: [String]
+  imageData: PublishHouseFileImageInput
+}
+
+input PublishHouseFileImageInput {
+  id: String
+  url: String
+  width: Int
+  height: Int
+  spots: [PublishHouseFileImageSpotInfoInput]
+}
+
+input PublishHouseFileImageSpotInfoInput {
+  x: Int
+  y: Int
+  subTitle: String
+}
+
+input PublishShortPostInput {
+  id: String
+  content: String
+  topicId: String
+  relatedItemIds: [String]
+  attachments: [PublishShortPostAttachment]
+  score: String
+  isDraft: Boolean
+  original: String
+}
+
+input PublishShortPostAttachment {
+  id: String
+  url: String
+  width: Int
+  height: Int
+  videoUrl: String
+  duration: Int
+  spots: [PublishFileImageSpotInfo]
+}
+
+input PublishFileImageSpotInfo {
+  x: Int
+  y: Int
+  subTitle: String
+}
+
+type PublishedShortPostInfo {
+  id: String
+  isDraft: Boolean
+  content: String
+  topic: TopicListItem
+  relatedItems: RelatedItemListItem
+  attachments: [FileInfo]
+  original: String
+  designer: DesignerListItem
+  finishTime: String
+  houseType: String
+  price: String
+  contractAttachment: FileInfo
+  designScore: Float
+  attitudeScore: Float
+  communicationScore: Float
+  budgetScore: Float
+}
+
+input PublishArticleInput {
+  tid: String
+  subject: String
+  coverId: String
+  cover: String
+  lastUpdateTime: String
+  original: String
+  content: String
+}
+
+input SaveArticleDraftInput {
+  tid: String
+  subject: String
+  coverId: String
+  coverUrl: String
+  lastUpdateTime: String
+  content: String
+}
+
+type PublishedArticleInfo {
+  tid: String
+  cover: FileInfo
+  subject: String
+  lastUpdateTime: String
+  content: String
+  brandList: [BrandListItem]
+  goodsList: [GoodsListItem]
+  decorateList: [DecorateCompanyListItem]
+}
+
+type MessageRemindDetail {
+  favStatus: Boolean
+  commentStatus: Boolean
+}
+
+input ReportInput {
+  postId: String
+  reason: Int
+  desc: String
+  authorName: String
+  content: String
+}
+
+input FeedBackInput {
+  contact: String
+  desc: String
+  pageName: String
+  keyword: String
+}
+
+type ReportRep {
+  error: Boolean
+  message: String
+}
+
+enum WatermarkPosition {
+  Center
+  BottomRight
+}
+
+type ShortPost {
+  id: String
+  author: User
+  text: String
+  markdownContent: String
+  attachments: [FileInfo]
+  fav: FavInfo
+  zan: ZanInfo
+  comment: CommentInfo
+  publishedDate: Int
+  updatedDate: Int
+  relateTopics: [Topic]
+  relateBrands: [Brand]
+  jump: JumpInfo
+  share: ShareInfo
+  relatedSharingsBrandsCount: Int
+  relatedItems: RelatedItemListItem
+}
+
+type ShortPostListItem {
+  id: String
+  shortPost: ShortPost
+  jump: JumpInfo
+  statistic: StatisticInfo
+  flagTitle: String
+  relatedBrands: [Brand]
+  designerScore: DesignerScore
+  relatedItems: RelatedItemListItem
+}
+
+type ShortPostWaterfallItem {
+  id: String
+  shortPost: ShortPost
+  flagIcon: FileInfo
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ### 短内容内页
+type ShortPostDetailPage {
+  id: String
+  shortPost: ShortPost
+  labelList: [EntranceItem]
+  relatedItems: [ListItem]
+  commentShowTitle: String
+  commentShowList: [CommentListItem]
+  moreCommentButtonAction: ButtonAction
+  statistic: StatisticInfo
+}
+
+type ShortPostSimilarVideoPage {
+  id: String
+  shortPostList: [ShortPost]
+  pagination: Pagination
+  statistic: StatisticInfo
+}
+
+type DesignerScore {
+  budgetScore: Float
+  designScore: Float
+  attitudeScore: Float
+  communicationScore: Float
+  totalScore: Float
+}
+
+enum DesignerScoreListItemStyle {
+  Item
+  Total
+}
+
+type DesignerScoreListItem {
+  score: DesignerScore
+  style: DesignerScoreListItemStyle
+}
+
+type Store {
+  id: String
+  name: String
+  logo: FileInfo
+  isVerified: Boolean
+  images: [FileInfo]
+  hasOwner: Boolean
+  claimUrl: String
+  tradeTime: String
+  relatedBrand: Brand
+  relatedBrandListItem: BrandListItem
+  numberOfRelatedItems: Int
+  numberOfFavs: Int
+  relatedItemsImage: [FileInfo]
+  itemCategories: [String]
+  jump: JumpInfo
+  share: ShareInfo
+  fav: FavInfo
+  location: LocationInfo
+  jumpCallPhone: [JumpInfo]
+  jumpNavigator: JumpInfo
+  buyInfo: StoreBuyInfo
+}
+
+type StoreBuyInfo {
+  title: String
+  enabled: Boolean
+  disabledTips: String
+  jump: JumpInfo
+}
+
+
+# ## 门店单行信息
+enum StoreListItemStyle {
+  SEARCH
+  MARKDOWN
+  MULTI_ITEM
+}
+
+type StoreListItem {
+  id: String
+  style: StoreListItemStyle
+  title: String
+  subTitle: String
+  jumpNavigator: JumpInfo
+  jumpCallPhone: JumpInfo
+}
+
+type SuperEditorRankList {
+  title: String
+  body: [SuperEditorRankListItem]
+  success: Boolean
+  msg: String
+  userRankInfo: SuperEditorRankListItem
+}
+
+type SuperEditorRankListItem {
+  rank_desc: String
+  user_id: String
+  avatar: String
+  nick_name: String
+  badge: FileInfo
+  index: String
+  jump: JumpInfo
+}
+
+type SuperEditorDialogOptionValue {
+  normalOptions: [SuperEditorDialogOptionItem]
+  jumpPathOptions: [SuperEditorDialogJumpPathItem]
+}
+
+enum YAMLOptionWidgetType {
+  TextFieldType
+  TextViewType
+  RadioType
+  CheckboxType
+}
+
+type SuperEditorDialogOptionItem {
+  value: [String]
+  selectedValue: [String]
+  name: String
+  type: YAMLOptionWidgetType
+  placeholder: String
+}
+
+type SuperEditorDialogJumpPathItem {
+  path: String
   name: String
 }
 
-"""Query any Pokémon by number or name"""
-type Query {
+type SuperEditorActivityDetailQuery {
+  title: String
+  body: [SuperEditorActivityDetailItem]
+  success: Boolean
+  msg: String
+}
+
+type SuperEditorActivityDetailItem {
+  type: String
+  ids: [String]
+}
+
+type SuperEditorActivityGridQuery {
+  title: String
+  body: String
+  success: Boolean
+  msg: String
+}
+
+type SuperEditorPage {
+  path: String
+  data: String
+  shareLink: String
+}
+
+type Topic {
+  id: String
+  title: String
+  introduceText: String
+  introduceLinkTitle: String
+  introduceLinkText: String
+  tipsMarkdown: String
+  cover: FileInfo
+  headerImage: FileInfo
+  fav: FavInfo
+  numberOfJoinedUsers: Int
+  numberOfViews: Int
+  jump: JumpInfo
+  share: ShareInfo
+}
+
+
+# ### 话题详情页
+type TopicDetailPage {
+  id: String
+  topic: Topic
+  subTitle: String
+  content: TabView
+  statistic: StatisticInfo
+  topicTag: String
+}
+
+
+# ## 话题单行信息
+enum TopicListItemStyle {
+  REGULAR
+  CHOOSE
+  ZHUANTI
+  BRAND
+  MARKDOWN
+  PUBLISHER
+}
+
+type TopicListItem {
+  id: String
+  style: TopicListItemStyle
+  topic: Topic
+  subTitle: String
+  flagTitle: String
+  flagColor: Int
+  flagColorStr: String
+  participants: [FileInfo]
+  badge: MessageBadge
+  jump: JumpInfo
+  statistic: StatisticInfo
+}
+
+enum UserGender {
+  NONE
+  MALE
+  FEMALE
+}
+
+type User {
+  id: String
+  avatar: FileInfo
+  avatarBadge: FileInfo
+  userRole: String
+  isDesigner: Boolean
+  userRoleDesc: String
+  nickname: String
+  userGender: UserGender
+  birthday: String
+  isStoreAccount: Boolean
+  isPlanter: Boolean
+  accountSource: String
+  bio: String
+  cityName: String
+  activeWatermark: Boolean
+  watermark: String
+  watermarkAlign: WatermarkAlign
+  background: FileInfo
+  viewerHasFollow: Boolean
+  userHasFollowViewer: Boolean
+  jump: JumpInfo
+  avatarJumpStatistic: StatisticInfo
+  share: ShareInfo
+  userBagde: UserBadge
+  userBagdes: [UserBadge]
+  areaBagdes: [UserBadge]
+  planterDetail: JumpInfo
+  userContentCount: UserContentCount
+  userContentCountForManager: UserContentCountForManager
+  aboutAttrs: [KeyValue]
+  topPictures: [FileInfo]
+  userVip: Int
+}
+
+type UserContentCount {
+  pic: Int
+  house: Int
+  article: Int
+  answer: Int
+  read: Int
+  following: Int
+  follower: Int
+  zanAndFav: Int
+}
+
+type UserContentCountForManager {
+  follower: Int
+  video: Int
+  videoFav: Int
+  isPublish: Boolean
+}
+
+type UserBadge {
+  id: String
+  name: String
+  logo: FileInfo
+  logo_vertical: FileInfo
+  logo_horizontal: FileInfo
+  introduction: String
+  jumpAllBadges: JumpInfo
+}
+
+enum UserListItemStyle {
+  SEARCH
+  MARKDOWN
+  RECOMMEND
+}
+
+type UserListItem {
+  id: String
+  style: UserListItemStyle
+  user: User
+  isNew: Boolean
+  statistic: StatisticInfo
+  topPictures: [FileInfo]
+  recommendReason: String
+}
+
+
+# ### 徽章墙页
+type UserBadgesWallPage {
+  title: String
+  subTitle: String
+  badgeRule: EntranceItem
+  list: [UserBadgesWallItem]
+}
+
+type UserBadgesWallItem {
+  name: String
+  logo: FileInfo
+  image: FileInfo
+  introduction: String
+  status: UserBadgeStatus
+}
+
+enum UserBadgeStatus {
+  offline
+  hasGet
+  noGet
+}
+
+
+# ### 个人资料内页
+type UserDetailPage {
+  id: String
+  content: TabView
+  tangdouJump: JumpInfo
+  statistic: StatisticInfo
+}
+
+
+# ### 装修档案
+type DecorationDocumentPage {
+  apartmentTags: DecorationDocumentTagGroup
+  typeTags: DecorationDocumentTagGroup
+  petTags: DecorationDocumentTagGroup
+  decorationTags: DecorationDocumentTagGroup
+  statusTags: DecorationDocumentTagGroup
+  archive: DecorationDocumentArchive
+  statistic: StatisticInfo
+  editDeeplink: String
+  sendDeeplink: String
+}
+
+type DecorationDocumentTag {
+  title: String
+  value: String
+}
+
+type DecorationDocumentTagGroup {
+  selectedValue: String
+  tags: [DecorationDocumentTag]
+}
+
+type DecorationDocumentArchive {
+  title: String
+  cityadcodes: String
+  citynames: String
+  apartment: String
+  decorationStatusName: String
+  petName: String
+  decorationScope: String
+  decorationScopeName: String
+  pet: String
+  type: String
+  floorarea: String
+  familymember: String
+  budget: String
+  decorationtime: String
+  suitabletime: String
+  mobile: String
+  description: String
+  decorationStatus: String
+  apartmentName: String
+  typeName: String
+  entrancEarea: String
+  livingEarea: String
+  kitchenEarea: String
+  bedroomEarea: String
+  studyEarea: String
+  floorPlan: String
+  demand: String
+  contactWay: String
+}
+
+input DecorationDocumentArchiveInput {
+  checkRequired: Boolean
+  designerId: String
+  title: String
+  cityadcodes: String
+  citynames: String
+  apartment: String
+  decorationStatusName: String
+  petName: String
+  decorationScope: String
+  decorationScopeName: String
+  pet: String
+  type: String
+  floorarea: String
+  familymember: String
+  budget: String
+  decorationtime: String
+  suitabletime: String
+  mobile: String
+  description: String
+  decorationStatus: String
+  apartmentName: String
+  typeName: String
+  entrancEarea: String
+  livingEarea: String
+  kitchenEarea: String
+  bedroomEarea: String
+  studyEarea: String
+  floorPlan: String
+  demand: String
+  contactWay: String
+}
+
+
+# ### 未读消息数
+type UnreadCount {
+  newCommentCount: Int
+  newFavCount: Int
+  newZanCount: Int
+  newFollowerCount: Int
+  newSystemMessageCount: Int
+  newSystemMessageTitle: String
+  newSystemMessageDate: Int
+  newRecommendMessageCount: Int
+  newRecommendMessageTitle: String
+  newRecommendMessageDate: Int
+}
+
+
+# ## 未读消息内页列表
+type ReminderListItem {
+  id: String
+  message: String
+  sender: User
+  isNew: Boolean
+  sendDate: Int
+  contentTitle: String
+  contentCover: FileInfo
+  jump: JumpInfo
+  sourceText: String
+  quoteAuthor: String
+  contentId: String
+  quoteId: String
+  quoteMessage: String
+  canRecommed: Boolean
+  statistic: StatisticInfo
+}
+
+schema {
   query: Query
-  pokemons(first: Int!): [Pokemon]
-  pokemon(id: String, name: String): Pokemon
+  mutation: Mutation
 }

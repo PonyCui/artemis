@@ -7,193 +7,524 @@ import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
 part 'big_query.graphql.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class BigQuery$Query$Charmander with EquatableMixin {
-  BigQuery$Query$Charmander();
-
-  factory BigQuery$Query$Charmander.fromJson(Map<String, dynamic> json) =>
-      _$BigQuery$Query$CharmanderFromJson(json);
-
-  String number;
-
-  List<String> types;
-
-  @override
-  List<Object> get props => [number, types];
-  Map<String, dynamic> toJson() => _$BigQuery$Query$CharmanderToJson(this);
+mixin ListFragmentMixin {
+  String path;
+  ListConnectionFragmentMixinClass body;
+  ListFragmentMixin$Pagination pagination;
+  ListFragmentMixin$CacheControl cacheControl;
 }
 
 @JsonSerializable(explicitToJson: true)
-class BigQuery$Query$Pokemon$Evolutions with EquatableMixin {
-  BigQuery$Query$Pokemon$Evolutions();
+class ListFragmentMixinClass with ListFragmentMixin {
+  factory ListFragmentMixinClass.fromJson(Map<String, dynamic> json) =>
+      _$ListFragmentMixinClassFromJson(json);
+  Map<String, dynamic> toJson() => _$ListFragmentMixinClassToJson(this);
+  ListFragmentMixinClass();
+}
 
-  factory BigQuery$Query$Pokemon$Evolutions.fromJson(
+mixin ListConnectionFragmentMixin {
+  List<ListConnectionFragmentMixin$ListItem> items;
+}
+
+@JsonSerializable(explicitToJson: true)
+class ListConnectionFragmentMixinClass with ListConnectionFragmentMixin {
+  factory ListConnectionFragmentMixinClass.fromJson(
           Map<String, dynamic> json) =>
-      _$BigQuery$Query$Pokemon$EvolutionsFromJson(json);
-
-  String number;
-
-  String name;
-
-  @override
-  List<Object> get props => [number, name];
+      _$ListConnectionFragmentMixinClassFromJson(json);
   Map<String, dynamic> toJson() =>
-      _$BigQuery$Query$Pokemon$EvolutionsToJson(this);
+      _$ListConnectionFragmentMixinClassToJson(this);
+  ListConnectionFragmentMixinClass();
+}
+
+mixin ArticleListItemFragmentMixin {
+  String id;
+  @JsonKey(unknownEnumValue: ArticleListItemStyle.artemisUnknown)
+  ArticleListItemStyle articleStyle;
+  String flagTitle;
 }
 
 @JsonSerializable(explicitToJson: true)
-class BigQuery$Query$Pokemon with EquatableMixin {
-  BigQuery$Query$Pokemon();
+class ArticleListItemFragmentMixinClass with ArticleListItemFragmentMixin {
+  factory ArticleListItemFragmentMixinClass.fromJson(
+          Map<String, dynamic> json) =>
+      _$ArticleListItemFragmentMixinClassFromJson(json);
+  Map<String, dynamic> toJson() =>
+      _$ArticleListItemFragmentMixinClassToJson(this);
+  ArticleListItemFragmentMixinClass();
+}
 
-  factory BigQuery$Query$Pokemon.fromJson(Map<String, dynamic> json) =>
-      _$BigQuery$Query$PokemonFromJson(json);
-
-  String number;
-
-  String name;
-
-  List<String> types;
-
-  List<BigQuery$Query$Pokemon$Evolutions> evolutions;
-
-  @override
-  List<Object> get props => [number, name, types, evolutions];
-  Map<String, dynamic> toJson() => _$BigQuery$Query$PokemonToJson(this);
+mixin HouseListItemFragmentMixin {
+  String id;
+  @JsonKey(unknownEnumValue: HouseListItemStyle.artemisUnknown)
+  HouseListItemStyle houseStyle;
+  String houseInfo;
 }
 
 @JsonSerializable(explicitToJson: true)
-class BigQuery$Query with EquatableMixin {
-  BigQuery$Query();
-
-  factory BigQuery$Query.fromJson(Map<String, dynamic> json) =>
-      _$BigQuery$QueryFromJson(json);
-
-  BigQuery$Query$Charmander charmander;
-
-  List<BigQuery$Query$Pokemon> pokemons;
-
-  @override
-  List<Object> get props => [charmander, pokemons];
-  Map<String, dynamic> toJson() => _$BigQuery$QueryToJson(this);
+class HouseListItemFragmentMixinClass with HouseListItemFragmentMixin {
+  factory HouseListItemFragmentMixinClass.fromJson(Map<String, dynamic> json) =>
+      _$HouseListItemFragmentMixinClassFromJson(json);
+  Map<String, dynamic> toJson() =>
+      _$HouseListItemFragmentMixinClassToJson(this);
+  HouseListItemFragmentMixinClass();
 }
 
 @JsonSerializable(explicitToJson: true)
-class BigQueryArguments extends JsonSerializable with EquatableMixin {
-  BigQueryArguments({@required this.quantity});
+class CommonList$Query with EquatableMixin {
+  CommonList$Query();
+
+  factory CommonList$Query.fromJson(Map<String, dynamic> json) =>
+      _$CommonList$QueryFromJson(json);
+
+  ListFragmentMixinClass commonList;
 
   @override
-  factory BigQueryArguments.fromJson(Map<String, dynamic> json) =>
-      _$BigQueryArgumentsFromJson(json);
-
-  final int quantity;
-
-  @override
-  List<Object> get props => [quantity];
-  @override
-  Map<String, dynamic> toJson() => _$BigQueryArgumentsToJson(this);
+  List<Object> get props => [commonList];
+  Map<String, dynamic> toJson() => _$CommonList$QueryToJson(this);
 }
 
-class BigQueryQuery extends GraphQLQuery<BigQuery$Query, BigQueryArguments> {
-  BigQueryQuery({this.variables});
+@JsonSerializable(explicitToJson: true)
+class ListFragmentMixin$Pagination with EquatableMixin {
+  ListFragmentMixin$Pagination();
+
+  factory ListFragmentMixin$Pagination.fromJson(Map<String, dynamic> json) =>
+      _$ListFragmentMixin$PaginationFromJson(json);
+
+  bool noData;
+
+  String noDataDescription;
+
+  bool canRefresh;
+
+  String refreshPath;
+
+  String refreshToken;
+
+  bool canLoadMore;
+
+  String loadMorePath;
+
+  String loadMoreToken;
+
+  @override
+  List<Object> get props => [
+        noData,
+        noDataDescription,
+        canRefresh,
+        refreshPath,
+        refreshToken,
+        canLoadMore,
+        loadMorePath,
+        loadMoreToken
+      ];
+  Map<String, dynamic> toJson() => _$ListFragmentMixin$PaginationToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class ListFragmentMixin$CacheControl with EquatableMixin {
+  ListFragmentMixin$CacheControl();
+
+  factory ListFragmentMixin$CacheControl.fromJson(Map<String, dynamic> json) =>
+      _$ListFragmentMixin$CacheControlFromJson(json);
+
+  @JsonKey(unknownEnumValue: CachePolicy.artemisUnknown)
+  CachePolicy cachePolicy;
+
+  int expiredDate;
+
+  @override
+  List<Object> get props => [cachePolicy, expiredDate];
+  Map<String, dynamic> toJson() => _$ListFragmentMixin$CacheControlToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class ListConnectionFragmentMixin$ListItem$ArticleListItem
+    extends ListConnectionFragmentMixin$ListItem
+    with EquatableMixin, ArticleListItemFragmentMixin {
+  ListConnectionFragmentMixin$ListItem$ArticleListItem();
+
+  factory ListConnectionFragmentMixin$ListItem$ArticleListItem.fromJson(
+          Map<String, dynamic> json) =>
+      _$ListConnectionFragmentMixin$ListItem$ArticleListItemFromJson(json);
+
+  @override
+  List<Object> get props => [id, articleStyle, flagTitle];
+  Map<String, dynamic> toJson() =>
+      _$ListConnectionFragmentMixin$ListItem$ArticleListItemToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class ListConnectionFragmentMixin$ListItem$HouseListItem
+    extends ListConnectionFragmentMixin$ListItem
+    with EquatableMixin, HouseListItemFragmentMixin {
+  ListConnectionFragmentMixin$ListItem$HouseListItem();
+
+  factory ListConnectionFragmentMixin$ListItem$HouseListItem.fromJson(
+          Map<String, dynamic> json) =>
+      _$ListConnectionFragmentMixin$ListItem$HouseListItemFromJson(json);
+
+  @override
+  List<Object> get props => [id, houseStyle, houseInfo];
+  Map<String, dynamic> toJson() =>
+      _$ListConnectionFragmentMixin$ListItem$HouseListItemToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class ListConnectionFragmentMixin$ListItem with EquatableMixin {
+  ListConnectionFragmentMixin$ListItem();
+
+  factory ListConnectionFragmentMixin$ListItem.fromJson(
+      Map<String, dynamic> json) {
+    switch (json['__typename'].toString()) {
+      case r'ArticleListItem':
+        return ListConnectionFragmentMixin$ListItem$ArticleListItem.fromJson(
+            json);
+      case r'HouseListItem':
+        return ListConnectionFragmentMixin$ListItem$HouseListItem.fromJson(
+            json);
+      default:
+    }
+    return _$ListConnectionFragmentMixin$ListItemFromJson(json);
+  }
+
+  @JsonKey(name: '__typename')
+  String $$typename;
+
+  @override
+  List<Object> get props => [$$typename];
+  Map<String, dynamic> toJson() {
+    switch ($$typename) {
+      case r'ArticleListItem':
+        return (this as ListConnectionFragmentMixin$ListItem$ArticleListItem)
+            .toJson();
+      case r'HouseListItem':
+        return (this as ListConnectionFragmentMixin$ListItem$HouseListItem)
+            .toJson();
+      default:
+    }
+    return _$ListConnectionFragmentMixin$ListItemToJson(this);
+  }
+}
+
+enum CachePolicy {
+  @JsonValue('NEVER')
+  never,
+  @JsonValue('USE_LOCAL')
+  useLocal,
+  @JsonValue('USE_LOCAL_LOAD_REFRESH')
+  useLocalLoadRefresh,
+  @JsonValue('USE_LOCAL_LOAD_REMOTE')
+  useLocalLoadRemote,
+  @JsonValue('ARTEMIS_UNKNOWN')
+  artemisUnknown,
+}
+enum ArticleListItemStyle {
+  @JsonValue('DOUBLE_COLUMNS')
+  doubleColumns,
+  @JsonValue('DOUBLE_COLUMNS_TRIPLE_ROWS')
+  doubleColumnsTripleRows,
+  @JsonValue('ARTEMIS_UNKNOWN')
+  artemisUnknown,
+}
+enum HouseListItemStyle {
+  @JsonValue('DOUBLE_ROWS')
+  doubleRows,
+  @JsonValue('TRIPLE_ROWS')
+  tripleRows,
+  @JsonValue('ARTEMIS_UNKNOWN')
+  artemisUnknown,
+}
+
+@JsonSerializable(explicitToJson: true)
+class CommonListArguments extends JsonSerializable with EquatableMixin {
+  CommonListArguments(
+      {@required this.path,
+      this.refreshToken,
+      this.loadMoreToken,
+      this.params});
+
+  @override
+  factory CommonListArguments.fromJson(Map<String, dynamic> json) =>
+      _$CommonListArgumentsFromJson(json);
+
+  final String path;
+
+  final String refreshToken;
+
+  final String loadMoreToken;
+
+  final String params;
+
+  @override
+  List<Object> get props => [path, refreshToken, loadMoreToken, params];
+  @override
+  Map<String, dynamic> toJson() => _$CommonListArgumentsToJson(this);
+}
+
+class CommonListQuery
+    extends GraphQLQuery<CommonList$Query, CommonListArguments> {
+  CommonListQuery({this.variables});
 
   @override
   final DocumentNode document = DocumentNode(definitions: [
     OperationDefinitionNode(
         type: OperationType.query,
-        name: NameNode(value: 'big_query'),
+        name: NameNode(value: 'common_list'),
         variableDefinitions: [
           VariableDefinitionNode(
-              variable: VariableNode(name: NameNode(value: 'quantity')),
-              type:
-                  NamedTypeNode(name: NameNode(value: 'Int'), isNonNull: true),
+              variable: VariableNode(name: NameNode(value: 'path')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: []),
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'refreshToken')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: false),
+              defaultValue: DefaultValueNode(value: null),
+              directives: []),
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'loadMoreToken')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: false),
+              defaultValue: DefaultValueNode(value: null),
+              directives: []),
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'params')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: false),
               defaultValue: DefaultValueNode(value: null),
               directives: [])
         ],
         directives: [],
         selectionSet: SelectionSetNode(selections: [
           FieldNode(
-              name: NameNode(value: 'pokemon'),
-              alias: NameNode(value: 'charmander'),
+              name: NameNode(value: 'commonList'),
+              alias: null,
               arguments: [
                 ArgumentNode(
-                    name: NameNode(value: 'name'),
-                    value: StringValueNode(value: 'Charmander', isBlock: false))
+                    name: NameNode(value: 'path'),
+                    value: VariableNode(name: NameNode(value: 'path'))),
+                ArgumentNode(
+                    name: NameNode(value: 'refreshToken'),
+                    value: VariableNode(name: NameNode(value: 'refreshToken'))),
+                ArgumentNode(
+                    name: NameNode(value: 'loadMoreToken'),
+                    value:
+                        VariableNode(name: NameNode(value: 'loadMoreToken'))),
+                ArgumentNode(
+                    name: NameNode(value: 'params'),
+                    value: VariableNode(name: NameNode(value: 'params')))
               ],
               directives: [],
               selectionSet: SelectionSetNode(selections: [
+                FragmentSpreadNode(
+                    name: NameNode(value: 'ListFragment'), directives: [])
+              ]))
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'ListFragment'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(name: NameNode(value: 'List'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'path'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'body'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FragmentSpreadNode(
+                    name: NameNode(value: 'ListConnectionFragment'),
+                    directives: [])
+              ])),
+          FieldNode(
+              name: NameNode(value: 'pagination'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
                 FieldNode(
-                    name: NameNode(value: 'number'),
+                    name: NameNode(value: 'noData'),
                     alias: null,
                     arguments: [],
                     directives: [],
                     selectionSet: null),
                 FieldNode(
-                    name: NameNode(value: 'types'),
+                    name: NameNode(value: 'noDataDescription'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'canRefresh'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'refreshPath'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'refreshToken'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'canLoadMore'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'loadMorePath'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'loadMoreToken'),
                     alias: null,
                     arguments: [],
                     directives: [],
                     selectionSet: null)
               ])),
           FieldNode(
-              name: NameNode(value: 'pokemons'),
+              name: NameNode(value: 'cacheControl'),
               alias: null,
-              arguments: [
-                ArgumentNode(
-                    name: NameNode(value: 'first'),
-                    value: VariableNode(name: NameNode(value: 'quantity')))
-              ],
+              arguments: [],
               directives: [],
               selectionSet: SelectionSetNode(selections: [
                 FieldNode(
-                    name: NameNode(value: 'number'),
+                    name: NameNode(value: 'cachePolicy'),
                     alias: null,
                     arguments: [],
                     directives: [],
                     selectionSet: null),
                 FieldNode(
-                    name: NameNode(value: 'name'),
+                    name: NameNode(value: 'expiredDate'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null)
+              ]))
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'ListConnectionFragment'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'ListConnection'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'items'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FieldNode(
+                    name: NameNode(value: '__typename'),
                     alias: null,
                     arguments: [],
                     directives: [],
                     selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'types'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'evolutions'),
-                    alias: NameNode(value: 'evolutions'),
-                    arguments: [],
+                InlineFragmentNode(
+                    typeCondition: TypeConditionNode(
+                        on: NamedTypeNode(
+                            name: NameNode(value: 'ArticleListItem'),
+                            isNonNull: false)),
                     directives: [],
                     selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'number'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null),
-                      FieldNode(
-                          name: NameNode(value: 'name'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
+                      FragmentSpreadNode(
+                          name: NameNode(value: 'ArticleListItemFragment'),
+                          directives: [])
+                    ])),
+                InlineFragmentNode(
+                    typeCondition: TypeConditionNode(
+                        on: NamedTypeNode(
+                            name: NameNode(value: 'HouseListItem'),
+                            isNonNull: false)),
+                    directives: [],
+                    selectionSet: SelectionSetNode(selections: [
+                      FragmentSpreadNode(
+                          name: NameNode(value: 'HouseListItemFragment'),
+                          directives: [])
                     ]))
               ]))
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'ArticleListItemFragment'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'ArticleListItem'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'id'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'style'),
+              alias: NameNode(value: 'articleStyle'),
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'flagTitle'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null)
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'HouseListItemFragment'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'HouseListItem'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'id'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'style'),
+              alias: NameNode(value: 'houseStyle'),
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'houseInfo'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null)
         ]))
   ]);
 
   @override
-  final String operationName = 'big_query';
+  final String operationName = 'common_list';
 
   @override
-  final BigQueryArguments variables;
+  final CommonListArguments variables;
 
   @override
   List<Object> get props => [document, operationName, variables];
   @override
-  BigQuery$Query parse(Map<String, dynamic> json) =>
-      BigQuery$Query.fromJson(json);
+  CommonList$Query parse(Map<String, dynamic> json) =>
+      CommonList$Query.fromJson(json);
 }

@@ -124,7 +124,9 @@ Spec classDefinitionToSpec(
   final extendedClass = classes
       .firstWhere((e) => e.name == definition.extension, orElse: () => null);
 
-  if (definition.mixins.length == 1 && definition.properties.isEmpty) {
+  if (definition.extension == null &&
+      definition.mixins.length == 1 &&
+      definition.properties.isEmpty) {
     return null;
   }
 
@@ -387,7 +389,9 @@ Spec generateLibrarySpec(LibraryDefinition definition) {
   final classes = uniqueDefinitions.whereType<ClassDefinition>();
   final enums = uniqueDefinitions.whereType<EnumDefinition>();
   classes.forEach((definition) {
-    if (definition.mixins.length == 1 && definition.properties.isEmpty) {
+    if (definition.extension == null &&
+        definition.mixins.length == 1 &&
+        definition.properties.isEmpty) {
       classMapping[definition.name.namePrintable] =
           definition.mixins.first.fragmentClassNamePrintable;
     }
