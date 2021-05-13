@@ -127,7 +127,7 @@ Spec classDefinitionToSpec(
   if (definition.extension == null &&
       definition.mixins.length == 1 &&
       definition.properties.isEmpty) {
-    return null;
+    return Class((b) => b..name = '__NULL__');
   }
 
   return Class(
@@ -412,7 +412,12 @@ Spec generateLibrarySpec(LibraryDefinition definition) {
   bodyDirectives.addAll(fragments.map(fragmentClassDefinitionToSpec));
   bodyDirectives.addAll(classes
       .map((cDef) => classDefinitionToSpec(cDef, fragments, classes))
-      .where((element) => element != null));
+      .where((element) {
+    if (element is Class && element.name == '__NULL__') {
+      return false;
+    }
+    return true;
+  }));
   bodyDirectives.addAll(enums.map(enumDefinitionToSpec));
 
   for (final queryDef in definition.queries) {
