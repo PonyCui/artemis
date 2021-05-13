@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:test/test.dart';
 
@@ -78,41 +76,37 @@ final LibraryDefinition libraryDefinition =
             name: ClassName(name: r'Custom$_Query$_Node$_User'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'username'),
-                  isNonNull: true,
                   isResolveType: false)
             ],
             extension: ClassName(name: r'Custom$_Query$_Node'),
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'Custom$_Query$_Node$_ChatMessage'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'message'),
-                  isNonNull: true,
                   isResolveType: false)
             ],
             extension: ClassName(name: r'Custom$_Query$_Node'),
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'Custom$_Query$_Node'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'id'),
-                  isNonNull: true,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'__typename'),
                   annotations: [r'''JsonKey(name: '__typename')'''],
-                  isNonNull: false,
                   isResolveType: true)
             ],
             factoryPossibilities: {
@@ -120,7 +114,7 @@ final LibraryDefinition libraryDefinition =
               r'ChatMessage':
                   ClassName(name: r'Custom$_Query$_Node$_ChatMessage')
             },
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'Custom$_Query'),
@@ -128,26 +122,24 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'Custom$_Query$_Node'),
                   name: ClassPropertyName(name: r'nodeById'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false)
       ],
       inputs: [
         QueryInput(
-            type: TypeName(name: r'String'),
-            name: QueryInputName(name: r'id'),
-            isNonNull: true)
+            type: TypeName(name: r'String', isNonNull: true),
+            name: QueryInputName(name: r'id'))
       ],
       generateHelpers: false,
       suffix: r'Query')
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
-import 'package:meta/meta.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
@@ -160,10 +152,10 @@ class Custom$Query$Node$User extends Custom$Query$Node with EquatableMixin {
   factory Custom$Query$Node$User.fromJson(Map<String, dynamic> json) =>
       _$Custom$Query$Node$UserFromJson(json);
 
-  String username;
+  late String username;
 
   @override
-  List<Object> get props => [username];
+  List<Object?> get props => [username];
   Map<String, dynamic> toJson() => _$Custom$Query$Node$UserToJson(this);
 }
 
@@ -175,15 +167,15 @@ class Custom$Query$Node$ChatMessage extends Custom$Query$Node
   factory Custom$Query$Node$ChatMessage.fromJson(Map<String, dynamic> json) =>
       _$Custom$Query$Node$ChatMessageFromJson(json);
 
-  String message;
+  late String message;
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
   Map<String, dynamic> toJson() => _$Custom$Query$Node$ChatMessageToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class Custom$Query$Node with EquatableMixin {
+class Custom$Query$Node extends JsonSerializable with EquatableMixin {
   Custom$Query$Node();
 
   factory Custom$Query$Node.fromJson(Map<String, dynamic> json) {
@@ -197,13 +189,13 @@ class Custom$Query$Node with EquatableMixin {
     return _$Custom$Query$NodeFromJson(json);
   }
 
-  String id;
+  late String id;
 
   @JsonKey(name: '__typename')
-  String $$typename;
+  String? $$typename;
 
   @override
-  List<Object> get props => [id, $$typename];
+  List<Object?> get props => [id, $$typename];
   Map<String, dynamic> toJson() {
     switch ($$typename) {
       case r'User':
@@ -217,16 +209,16 @@ class Custom$Query$Node with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class Custom$Query with EquatableMixin {
+class Custom$Query extends JsonSerializable with EquatableMixin {
   Custom$Query();
 
   factory Custom$Query.fromJson(Map<String, dynamic> json) =>
       _$Custom$QueryFromJson(json);
 
-  Custom$Query$Node nodeById;
+  Custom$Query$Node? nodeById;
 
   @override
-  List<Object> get props => [nodeById];
+  List<Object?> get props => [nodeById];
   Map<String, dynamic> toJson() => _$Custom$QueryToJson(this);
 }
 ''';

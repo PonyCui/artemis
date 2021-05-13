@@ -84,6 +84,8 @@ targets:
           # custom configuration options!
 ```
 
+> ⚠️ Make sure your configuration file is called `build.yaml` (with `.yaml` extension, not `.yml`)!
+
 | Option | Default value | Description |
 | - | - | - |
 | `generate_helpers` | `true` | If Artemis should generate query/mutation helper GraphQLQuery subclasses. |
@@ -126,7 +128,8 @@ Each `SchemaMap` is configured this way:
 | `schema` |  | Relative path to the GraphQL schema. |
 | `queries_glob` |  | Glob that selects all query files to be used with this schema. |
 | `naming_scheme` | `pathedWithTypes` | The naming scheme to be used on generated classes names. `pathedWithTypes` is the default for retrocompatibility, where the names of previous types are used as prefix of the next class. This can generate duplication on certain schemas. With `pathedWithFields`, the names of previous fields are used as prefix of the next class and with `simple`, only the actual GraphQL class nameis considered. | 
-| `type_name_field` | `__typename` | The name of the field used to differentiatiate interfaces and union types (commonly `__typename` or `__resolveType`). Note that `__typename` field are not added automatically to the query. If you want interface/union type resolution, you need to manually add it there. |
+| `type_name_field` | `__typename` | The name of the field used to differentiate interfaces and union types (commonly `__typename` or `__resolveType`). Note that `__typename` field are not added automatically to the query. If you want interface/union type resolution, you need to manually add it there or set `append_type_name` to `true`. |
+| `append_type_name` | `false` | Appends `type_name_field` value to the query selections set. |
 
 See [examples](./example) for more information and configuration options.
 

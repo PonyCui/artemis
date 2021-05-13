@@ -1,8 +1,6 @@
-// @dart = 2.8
-
-import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/ephemeral_data.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:gql/ast.dart';
 
 typedef _IterableFunction<T, U> = U Function(T i);
@@ -87,16 +85,12 @@ Iterable<T> _removeDuplicatedBy<T, U>(
 /// __typename => $$typename
 /// new -> kw$new
 String normalizeName(String name) {
-  if (name == null) {
-    return name;
-  }
-
   final regExp = RegExp(r'^(_+)([\w$]*)$');
   var matches = regExp.allMatches(name);
 
   if (matches.isNotEmpty) {
     var match = matches.elementAt(0);
-    var fieldName = match.group(2);
+    var fieldName = match.group(2)!;
 
     return fieldName.padLeft(name.length, r'$');
   }
@@ -133,48 +127,27 @@ extension ExtensionsOnIterable<T, U> on Iterable<T> {
       _removeDuplicatedBy(this, fn);
 }
 
-/// Checks if the passed queries contain either:
-/// - A [ClassDefinition] that's an input object with at least one non nullable
-///     property.
-/// - A [QueryInput] which is non nullable.
-bool hasNonNullableInput(Iterable<QueryDefinition> queries) {
-  for (final query in queries) {
-    for (final clazz in query.classes.whereType<ClassDefinition>()) {
-      if (clazz.isInput && clazz.properties.any((p) => p.isNonNull)) {
-        return true;
-      }
-    }
-
-    if (query.inputs.any((i) => i.isNonNull)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 /// Check if [obj] has value (isn't null or empty).
-bool hasValue(Object obj) {
+bool hasValue(Object? obj) {
   if (obj is Iterable) {
-    return obj != null && obj.isNotEmpty;
+    return obj.isNotEmpty;
   }
   return obj != null && obj.toString().isNotEmpty;
 }
 
 /// Proceeds deprecated annotation
 List<String> proceedDeprecated(
-  List<DirectiveNode> directives,
+  List<DirectiveNode>? directives,
 ) {
   final annotations = <String>[];
 
-  final deprecatedDirective = directives?.firstWhere(
+  final deprecatedDirective = directives?.firstWhereOrNull(
     (directive) => directive.name.value == 'deprecated',
-    orElse: () => null,
   );
 
   if (deprecatedDirective != null) {
-    final reasonValueNode = deprecatedDirective?.arguments
-        ?.firstWhere((argument) => argument.name.value == 'reason')
+    final reasonValueNode = deprecatedDirective.arguments
+        .firstWhereOrNull((argument) => argument.name.value == 'reason')
         ?.value;
 
     final reason = reasonValueNode is StringValueNode

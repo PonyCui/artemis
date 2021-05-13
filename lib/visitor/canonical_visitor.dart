@@ -1,19 +1,17 @@
-// @dart = 2.8
-
 import 'package:artemis/generator.dart';
 import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/data/enum_value_definition.dart';
+import 'package:artemis/generator/data/nullable.dart';
 import 'package:artemis/generator/ephemeral_data.dart';
 import 'package:artemis/generator/helpers.dart';
 import 'package:artemis/generator/graphql_helpers.dart' as gql;
-import 'package:meta/meta.dart';
 import 'package:gql/ast.dart';
 
 /// Visits canonical types Enums and InputObjects
 class CanonicalVisitor extends RecursiveVisitor {
   /// Constructor
   CanonicalVisitor({
-    @required this.context,
+    required this.context,
   });
 
   /// Current context
@@ -29,7 +27,10 @@ class CanonicalVisitor extends RecursiveVisitor {
   void visitEnumTypeDefinitionNode(EnumTypeDefinitionNode node) {
     final enumName = EnumName(name: node.name.value);
 
-    final nextContext = context.sameTypeWithNoPath(alias: enumName);
+    final nextContext = context.sameTypeWithNoPath(
+      alias: enumName,
+      ofUnion: Nullable<TypeDefinitionNode?>(null),
+    );
 
     logFn(context, nextContext.align, '-> Enum');
     logFn(context, nextContext.align,
@@ -50,7 +51,10 @@ class CanonicalVisitor extends RecursiveVisitor {
   @override
   void visitInputObjectTypeDefinitionNode(InputObjectTypeDefinitionNode node) {
     final name = ClassName(name: node.name.value);
-    final nextContext = context.sameTypeWithNoPath(alias: name);
+    final nextContext = context.sameTypeWithNoPath(
+      alias: name,
+      ofUnion: Nullable<TypeDefinitionNode?>(null),
+    );
 
     logFn(context, nextContext.align, '-> Input class');
     logFn(context, nextContext.align,
@@ -65,6 +69,7 @@ class CanonicalVisitor extends RecursiveVisitor {
           nextType: node,
           nextClassName: ClassName(name: nextType.name.value),
           nextFieldName: ClassName(name: i.name.value),
+          ofUnion: Nullable<TypeDefinitionNode?>(null),
         ),
         markAsUsed: false,
       );

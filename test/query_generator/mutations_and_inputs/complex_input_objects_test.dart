@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/data/enum_value_definition.dart';
 import 'package:test/test.dart';
@@ -57,15 +55,9 @@ final LibraryDefinition libraryDefinition =
       operationName: r'some_query',
       classes: [
         EnumDefinition(name: EnumName(name: r'MyEnum'), values: [
-          EnumValueDefinition(
-            name: EnumValueName(name: r'value1'),
-          ),
-          EnumValueDefinition(
-            name: EnumValueName(name: r'value2'),
-          ),
-          EnumValueDefinition(
-            name: EnumValueName(name: r'ARTEMIS_UNKNOWN'),
-          ),
+          EnumValueDefinition(name: EnumValueName(name: r'value1')),
+          EnumValueDefinition(name: EnumValueName(name: r'value2')),
+          EnumValueDefinition(name: EnumValueName(name: r'ARTEMIS_UNKNOWN'))
         ]),
         ClassDefinition(
             name: ClassName(name: r'SomeQuery$_QueryRoot$_SomeObject'),
@@ -73,11 +65,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r's'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'SomeQuery$_QueryRoot'),
@@ -85,19 +76,17 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'SomeQuery$_QueryRoot$_SomeObject'),
                   name: ClassPropertyName(name: r'o'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'ComplexInput'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r's'),
-                  isNonNull: true,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'MyEnum'),
@@ -105,36 +94,36 @@ final LibraryDefinition libraryDefinition =
                   annotations: [
                     r'JsonKey(unknownEnumValue: MyEnum.artemisUnknown)'
                   ],
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
-                  type: TypeName(name: r'List<String>'),
+                  type: ListOfTypeName(
+                      typeName: TypeName(name: r'String'), isNonNull: false),
                   name: ClassPropertyName(name: r'ls'),
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
-                  type: TypeName(name: r'List<List<int>>'),
+                  type: ListOfTypeName(
+                      typeName: ListOfTypeName(
+                          typeName: TypeName(name: r'int'), isNonNull: false),
+                      isNonNull: false),
                   name: ClassPropertyName(name: r'i'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: true)
       ],
       inputs: [
         QueryInput(
-            type: TypeName(name: r'ComplexInput'),
-            name: QueryInputName(name: r'filter'),
-            isNonNull: true)
+            type: TypeName(name: r'ComplexInput', isNonNull: true),
+            name: QueryInputName(name: r'filter'))
       ],
       generateHelpers: true,
       suffix: r'Query')
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
-import 'package:meta/meta.dart';
 import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -142,51 +131,52 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$QueryRoot$SomeObject with EquatableMixin {
+class SomeQuery$QueryRoot$SomeObject extends JsonSerializable
+    with EquatableMixin {
   SomeQuery$QueryRoot$SomeObject();
 
   factory SomeQuery$QueryRoot$SomeObject.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$QueryRoot$SomeObjectFromJson(json);
 
-  String s;
+  String? s;
 
   @override
-  List<Object> get props => [s];
+  List<Object?> get props => [s];
   Map<String, dynamic> toJson() => _$SomeQuery$QueryRoot$SomeObjectToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$QueryRoot with EquatableMixin {
+class SomeQuery$QueryRoot extends JsonSerializable with EquatableMixin {
   SomeQuery$QueryRoot();
 
   factory SomeQuery$QueryRoot.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$QueryRootFromJson(json);
 
-  SomeQuery$QueryRoot$SomeObject o;
+  SomeQuery$QueryRoot$SomeObject? o;
 
   @override
-  List<Object> get props => [o];
+  List<Object?> get props => [o];
   Map<String, dynamic> toJson() => _$SomeQuery$QueryRootToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class ComplexInput with EquatableMixin {
-  ComplexInput({@required this.s, this.e, this.ls, this.i});
+class ComplexInput extends JsonSerializable with EquatableMixin {
+  ComplexInput({required this.s, this.e, this.ls, this.i});
 
   factory ComplexInput.fromJson(Map<String, dynamic> json) =>
       _$ComplexInputFromJson(json);
 
-  String s;
+  late String s;
 
   @JsonKey(unknownEnumValue: MyEnum.artemisUnknown)
-  MyEnum e;
+  MyEnum? e;
 
-  List<String> ls;
+  List<String?>? ls;
 
-  List<List<int>> i;
+  List<List<int?>?>? i;
 
   @override
-  List<Object> get props => [s, e, ls, i];
+  List<Object?> get props => [s, e, ls, i];
   Map<String, dynamic> toJson() => _$ComplexInputToJson(this);
 }
 
@@ -201,58 +191,60 @@ enum MyEnum {
 
 @JsonSerializable(explicitToJson: true)
 class SomeQueryArguments extends JsonSerializable with EquatableMixin {
-  SomeQueryArguments({@required this.filter});
+  SomeQueryArguments({required this.filter});
 
   @override
   factory SomeQueryArguments.fromJson(Map<String, dynamic> json) =>
       _$SomeQueryArgumentsFromJson(json);
 
-  final ComplexInput filter;
+  late ComplexInput filter;
 
   @override
-  List<Object> get props => [filter];
+  List<Object?> get props => [filter];
   @override
   Map<String, dynamic> toJson() => _$SomeQueryArgumentsToJson(this);
 }
 
+final SOME_QUERY_QUERY_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.query,
+      name: NameNode(value: 'some_query'),
+      variableDefinitions: [
+        VariableDefinitionNode(
+            variable: VariableNode(name: NameNode(value: 'filter')),
+            type: NamedTypeNode(
+                name: NameNode(value: 'ComplexInput'), isNonNull: true),
+            defaultValue: DefaultValueNode(value: null),
+            directives: [])
+      ],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: [
+        FieldNode(
+            name: NameNode(value: 'o'),
+            alias: null,
+            arguments: [
+              ArgumentNode(
+                  name: NameNode(value: 'filter'),
+                  value: VariableNode(name: NameNode(value: 'filter')))
+            ],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                  name: NameNode(value: 's'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null)
+            ]))
+      ]))
+]);
+
 class SomeQueryQuery
     extends GraphQLQuery<SomeQuery$QueryRoot, SomeQueryArguments> {
-  SomeQueryQuery({this.variables});
+  SomeQueryQuery({required this.variables});
 
   @override
-  final DocumentNode document = DocumentNode(definitions: [
-    OperationDefinitionNode(
-        type: OperationType.query,
-        name: NameNode(value: 'some_query'),
-        variableDefinitions: [
-          VariableDefinitionNode(
-              variable: VariableNode(name: NameNode(value: 'filter')),
-              type: NamedTypeNode(
-                  name: NameNode(value: 'ComplexInput'), isNonNull: true),
-              defaultValue: DefaultValueNode(value: null),
-              directives: [])
-        ],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: [
-          FieldNode(
-              name: NameNode(value: 'o'),
-              alias: null,
-              arguments: [
-                ArgumentNode(
-                    name: NameNode(value: 'filter'),
-                    value: VariableNode(name: NameNode(value: 'filter')))
-              ],
-              directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 's'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null)
-              ]))
-        ]))
-  ]);
+  final DocumentNode document = SOME_QUERY_QUERY_DOCUMENT;
 
   @override
   final String operationName = 'some_query';
@@ -261,7 +253,7 @@ class SomeQueryQuery
   final SomeQueryArguments variables;
 
   @override
-  List<Object> get props => [document, operationName, variables];
+  List<Object?> get props => [document, operationName, variables];
   @override
   SomeQuery$QueryRoot parse(Map<String, dynamic> json) =>
       SomeQuery$QueryRoot.fromJson(json);

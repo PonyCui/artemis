@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/data/enum_value_definition.dart';
 import 'package:artemis/generator/print_helpers.dart';
@@ -8,20 +6,18 @@ import 'package:test/test.dart';
 
 void main() {
   group('On printCustomEnum', () {
-    test('It will throw if name is null or empty.', () {
-      expect(() => enumDefinitionToSpec(EnumDefinition(name: null, values: [])),
-          throwsA(TypeMatcher<AssertionError>()));
+    test('It will throw if name is empty.', () {
       expect(
           () => enumDefinitionToSpec(
               EnumDefinition(name: EnumName(name: ''), values: [])),
           throwsA(TypeMatcher<AssertionError>()));
     });
 
-    test('It will throw if values is null or empty.', () {
-      expect(
-          () => enumDefinitionToSpec(
-              EnumDefinition(name: EnumName(name: 'Name'), values: null)),
-          throwsA(TypeMatcher<AssertionError>()));
+    test('It will throw if values is empty.', () {
+      // expect(
+      //     () => enumDefinitionToSpec(
+      //         EnumDefinition(name: EnumName(name: 'Name'), values: null)),
+      //     throwsA(TypeMatcher<AssertionError>()));
       expect(
           () => enumDefinitionToSpec(
               EnumDefinition(name: EnumName(name: 'Name'), values: [])),
@@ -90,10 +86,6 @@ void main() {
   group('On printCustomFragmentClass', () {
     test('It will throw if name is null or empty.', () {
       expect(
-          () => fragmentClassDefinitionToSpec(
-              FragmentClassDefinition(name: null, properties: [])),
-          throwsA(TypeMatcher<AssertionError>()));
-      expect(
           () => fragmentClassDefinitionToSpec(FragmentClassDefinition(
               name: FragmentName(name: ''), properties: [])),
           throwsA(TypeMatcher<AssertionError>()));
@@ -119,22 +111,22 @@ void main() {
       final str = specToString(fragmentClassDefinitionToSpec(definition));
 
       expect(str, '''mixin FragmentMixin {
-  Type name;
+  Type? name;
   @override
-  Type name;
+  Type? name;
   @Test
-  Type name;
+  Type? name;
 }
 ''');
     });
   });
 
   group('On printCustomClass', () {
-    test('It will throw if name is null or empty.', () {
-      expect(
-          () => classDefinitionToSpec(
-              ClassDefinition(name: null, properties: []), [], []),
-          throwsA(TypeMatcher<AssertionError>()));
+    test('It will throw if name is empty.', () {
+      // expect(
+      //     () => classDefinitionToSpec(
+      //         ClassDefinition(name: null, properties: []), [], []),
+      //     throwsA(TypeMatcher<AssertionError>()));
       expect(
           () => classDefinitionToSpec(
               ClassDefinition(name: ClassName(name: ''), properties: []),
@@ -150,13 +142,13 @@ void main() {
       final str = specToString(classDefinitionToSpec(definition, [], []));
 
       expect(str, '''@JsonSerializable(explicitToJson: true)
-class AClass with EquatableMixin {
+class AClass extends JsonSerializable with EquatableMixin {
   AClass();
 
   factory AClass.fromJson(Map<String, dynamic> json) => _\$AClassFromJson(json);
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
   Map<String, dynamic> toJson() => _\$AClassToJson(this);
 }
 ''');
@@ -177,7 +169,7 @@ class AClass extends AnotherClass with EquatableMixin {
   factory AClass.fromJson(Map<String, dynamic> json) => _\$AClassFromJson(json);
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
   Map<String, dynamic> toJson() => _\$AClassToJson(this);
 }
 ''');
@@ -193,13 +185,13 @@ class AClass extends AnotherClass with EquatableMixin {
           'ASubClass': ClassName(name: 'ASubClass'),
           'BSubClass': ClassName(name: 'BSubClass'),
         },
-        typeNameField: TypeName(name: '__typename'),
+        typeNameField: ClassPropertyName(name: '__typename'),
       );
 
       final str = specToString(classDefinitionToSpec(definition, [], []));
 
       expect(str, r'''@JsonSerializable(explicitToJson: true)
-class AClass with EquatableMixin {
+class AClass extends JsonSerializable with EquatableMixin {
   AClass();
 
   factory AClass.fromJson(Map<String, dynamic> json) {
@@ -214,7 +206,7 @@ class AClass with EquatableMixin {
   }
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
   Map<String, dynamic> toJson() {
     switch ($$typename) {
       case r'ASubClass':
@@ -243,17 +235,17 @@ class AClass with EquatableMixin {
       final str = specToString(classDefinitionToSpec(definition, [], []));
 
       expect(str, '''@JsonSerializable(explicitToJson: true)
-class AClass with EquatableMixin {
+class AClass extends JsonSerializable with EquatableMixin {
   AClass();
 
   factory AClass.fromJson(Map<String, dynamic> json) => _\$AClassFromJson(json);
 
-  Type name;
+  Type? name;
 
-  AnotherType anotherName;
+  AnotherType? anotherName;
 
   @override
-  List<Object> get props => [name, anotherName];
+  List<Object?> get props => [name, anotherName];
   Map<String, dynamic> toJson() => _\$AClassToJson(this);
 }
 ''');
@@ -284,25 +276,25 @@ class AClass with EquatableMixin {
       final str = specToString(classDefinitionToSpec(definition, [], []));
 
       expect(str, '''@JsonSerializable(explicitToJson: true)
-class AClass with EquatableMixin {
+class AClass extends JsonSerializable with EquatableMixin {
   AClass();
 
   factory AClass.fromJson(Map<String, dynamic> json) => _\$AClassFromJson(json);
 
-  Type name;
+  Type? name;
 
   @Hey()
-  AnnotatedProperty name;
+  AnnotatedProperty? name;
 
   @override
-  OverridenProperty name;
+  OverridenProperty? name;
 
   @override
   @Ho()
-  AllAtOnce name;
+  AllAtOnce? name;
 
   @override
-  List<Object> get props => [name, name, name, name];
+  List<Object?> get props => [name, name, name, name];
   Map<String, dynamic> toJson() => _\$AClassToJson(this);
 }
 ''');
@@ -327,13 +319,13 @@ class AClass with EquatableMixin {
       ], []));
 
       expect(str, '''@JsonSerializable(explicitToJson: true)
-class AClass with EquatableMixin, FragmentMixin {
+class AClass extends JsonSerializable with EquatableMixin, FragmentMixin {
   AClass();
 
   factory AClass.fromJson(Map<String, dynamic> json) => _\$AClassFromJson(json);
 
   @override
-  List<Object> get props => [name];
+  List<Object?> get props => [name];
   Map<String, dynamic> toJson() => _\$AClassToJson(this);
 }
 ''');
@@ -348,9 +340,8 @@ class AClass with EquatableMixin, FragmentMixin {
               type: TypeName(name: 'Type'),
               name: ClassPropertyName(name: 'name')),
           ClassProperty(
-              type: TypeName(name: 'AnotherType'),
-              name: ClassPropertyName(name: 'anotherName'),
-              isNonNull: true),
+              type: TypeName(name: 'AnotherType', isNonNull: true),
+              name: ClassPropertyName(name: 'anotherName')),
         ],
         isInput: true,
       );
@@ -358,17 +349,17 @@ class AClass with EquatableMixin, FragmentMixin {
       final str = specToString(classDefinitionToSpec(definition, [], []));
 
       expect(str, '''@JsonSerializable(explicitToJson: true)
-class AClass with EquatableMixin {
-  AClass({this.name, @required this.anotherName});
+class AClass extends JsonSerializable with EquatableMixin {
+  AClass({this.name, required this.anotherName});
 
   factory AClass.fromJson(Map<String, dynamic> json) => _\$AClassFromJson(json);
 
-  Type name;
+  Type? name;
 
-  AnotherType anotherName;
+  late AnotherType anotherName;
 
   @override
-  List<Object> get props => [name, anotherName];
+  List<Object?> get props => [name, anotherName];
   Map<String, dynamic> toJson() => _\$AClassToJson(this);
 }
 ''');
@@ -377,8 +368,6 @@ class AClass with EquatableMixin {
 
   group('On generateQueryClassSpec', () {
     test('It will throw if basename is null or empty.', () {
-      expect(() => generateLibrarySpec(LibraryDefinition(basename: null)),
-          throwsA(TypeMatcher<AssertionError>()));
       expect(() => generateLibrarySpec(LibraryDefinition(basename: '')),
           throwsA(TypeMatcher<AssertionError>()));
     });
@@ -387,7 +376,7 @@ class AClass with EquatableMixin {
       expect(
         () => generateQueryClassSpec(
           QueryDefinition(
-              name: QueryName(name: null),
+              name: QueryName(name: ''),
               operationName: 'Type',
               document: parseString('query test_query {}')),
         ),
@@ -398,17 +387,6 @@ class AClass with EquatableMixin {
           QueryDefinition(
               name: QueryName(name: 'Type'),
               operationName: '',
-              document: parseString('query test_query {}')),
-        ),
-        throwsA(
-          TypeMatcher<AssertionError>(),
-        ),
-      );
-      expect(
-        () => generateQueryClassSpec(
-          QueryDefinition(
-              name: QueryName(name: null),
-              operationName: 'test_query',
               document: parseString('query test_query {}')),
         ),
         throwsA(
@@ -435,6 +413,7 @@ class AClass with EquatableMixin {
       writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
       expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -452,6 +431,7 @@ part 'test_query.graphql.g.dart';
       writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
       expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -479,6 +459,7 @@ part 'test_query.graphql.g.dart';
       writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
       expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -486,24 +467,26 @@ import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
 part 'test_query.graphql.g.dart';
 
+final TEST_QUERY_QUERY_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.query,
+      name: NameNode(value: 'test_query'),
+      variableDefinitions: [],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: []))
+]);
+
 class TestQueryQuery extends GraphQLQuery<TestQuery, JsonSerializable> {
   TestQueryQuery();
 
   @override
-  final DocumentNode document = DocumentNode(definitions: [
-    OperationDefinitionNode(
-        type: OperationType.query,
-        name: NameNode(value: 'test_query'),
-        variableDefinitions: [],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: []))
-  ]);
+  final DocumentNode document = TEST_QUERY_QUERY_DOCUMENT;
 
   @override
   final String operationName = 'test_query';
 
   @override
-  List<Object> get props => [document, operationName];
+  List<Object?> get props => [document, operationName];
   @override
   TestQuery parse(Map<String, dynamic> json) => TestQuery.fromJson(json);
 }
@@ -531,6 +514,7 @@ class TestQueryQuery extends GraphQLQuery<TestQuery, JsonSerializable> {
       writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
       expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -546,26 +530,28 @@ class TestQueryArguments extends JsonSerializable with EquatableMixin {
   factory TestQueryArguments.fromJson(Map<String, dynamic> json) =>
       _\$TestQueryArgumentsFromJson(json);
 
-  final Type name;
+  final Type? name;
 
   @override
-  List<Object> get props => [name];
+  List<Object?> get props => [name];
   @override
   Map<String, dynamic> toJson() => _\$TestQueryArgumentsToJson(this);
 }
 
+final TEST_QUERY_QUERY_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.query,
+      name: NameNode(value: 'test_query'),
+      variableDefinitions: [],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: []))
+]);
+
 class TestQueryQuery extends GraphQLQuery<TestQuery, TestQueryArguments> {
-  TestQueryQuery({this.variables});
+  TestQueryQuery({required this.variables});
 
   @override
-  final DocumentNode document = DocumentNode(definitions: [
-    OperationDefinitionNode(
-        type: OperationType.query,
-        name: NameNode(value: 'test_query'),
-        variableDefinitions: [],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: []))
-  ]);
+  final DocumentNode document = TEST_QUERY_QUERY_DOCUMENT;
 
   @override
   final String operationName = 'test_query';
@@ -574,7 +560,7 @@ class TestQueryQuery extends GraphQLQuery<TestQuery, TestQueryArguments> {
   final TestQueryArguments variables;
 
   @override
-  List<Object> get props => [document, operationName, variables];
+  List<Object?> get props => [document, operationName, variables];
   @override
   TestQuery parse(Map<String, dynamic> json) => TestQuery.fromJson(json);
 }
@@ -603,10 +589,10 @@ class TestQueryArguments extends JsonSerializable with EquatableMixin {
   factory TestQueryArguments.fromJson(Map<String, dynamic> json) =>
       _\$TestQueryArgumentsFromJson(json);
 
-  final Type name;
+  final Type? name;
 
   @override
-  List<Object> get props => [name];
+  List<Object?> get props => [name];
   @override
   Map<String, dynamic> toJson() => _\$TestQueryArgumentsToJson(this);
 }
@@ -626,21 +612,23 @@ class TestQueryArguments extends JsonSerializable with EquatableMixin {
         suffix: 'Query',
       );
 
-      final str = specToString(generateQueryClassSpec(definition));
+      final str =
+          generateQueryClassSpec(definition).map((e) => specToString(e)).join();
 
-      expect(str,
-          '''class TestQueryQuery extends GraphQLQuery<TestQuery, TestQueryArguments> {
-  TestQueryQuery({this.variables});
+      expect(
+          str, '''final TEST_QUERY_QUERY_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.query,
+      name: NameNode(value: 'test_query'),
+      variableDefinitions: [],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: []))
+]);
+class TestQueryQuery extends GraphQLQuery<TestQuery, TestQueryArguments> {
+  TestQueryQuery({required this.variables});
 
   @override
-  final DocumentNode document = DocumentNode(definitions: [
-    OperationDefinitionNode(
-        type: OperationType.query,
-        name: NameNode(value: 'test_query'),
-        variableDefinitions: [],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: []))
-  ]);
+  final DocumentNode document = TEST_QUERY_QUERY_DOCUMENT;
 
   @override
   final String operationName = 'test_query';
@@ -649,7 +637,7 @@ class TestQueryArguments extends JsonSerializable with EquatableMixin {
   final TestQueryArguments variables;
 
   @override
-  List<Object> get props => [document, operationName, variables];
+  List<Object?> get props => [document, operationName, variables];
   @override
   TestQuery parse(Map<String, dynamic> json) => TestQuery.fromJson(json);
 }
@@ -679,6 +667,7 @@ class TestQueryArguments extends JsonSerializable with EquatableMixin {
       writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
       expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -686,13 +675,13 @@ import 'package:gql/ast.dart';
 part 'test_query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class AClass with EquatableMixin {
+class AClass extends JsonSerializable with EquatableMixin {
   AClass();
 
   factory AClass.fromJson(Map<String, dynamic> json) => _\$AClassFromJson(json);
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
   Map<String, dynamic> toJson() => _\$AClassToJson(this);
 }
 
@@ -707,11 +696,12 @@ enum SomeEnum {
   test('Should not add ignore_for_file when ignoreForFile is null', () {
     final buffer = StringBuffer();
     final definition = LibraryDefinition(basename: r'test_query.graphql');
-    final List<String> ignoreForFile = null;
+    final ignoreForFile = <String>[];
 
     writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
     expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -728,6 +718,7 @@ part 'test_query.graphql.g.dart';
     writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
     expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -745,6 +736,7 @@ part 'test_query.graphql.g.dart';
     writeLibraryDefinitionToBuffer(buffer, ignoreForFile, definition);
 
     expect(buffer.toString(), '''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 // ignore_for_file: my_rule_1, my_rule_2
 
 import 'package:json_annotation/json_annotation.dart';

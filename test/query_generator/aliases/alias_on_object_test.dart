@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:test/test.dart';
 
@@ -58,11 +56,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'st'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'SomeQuery$_QueryResponse$_anotherObject'),
@@ -70,11 +67,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'str'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'SomeQuery$_QueryResponse'),
@@ -82,22 +78,21 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r's'),
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'SomeQuery$_QueryResponse$_SomeObject'),
                   name: ClassPropertyName(name: r'o'),
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
-                  type: TypeName(
-                      name: r'List<SomeQuery$QueryResponse$AnotherObject>'),
+                  type: ListOfTypeName(
+                      typeName: TypeName(
+                          name: r'SomeQuery$_QueryResponse$_anotherObject'),
+                      isNonNull: false),
                   name: ClassPropertyName(name: r'anotherObject'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false)
       ],
       generateHelpers: false,
@@ -105,6 +100,7 @@ final LibraryDefinition libraryDefinition =
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -112,52 +108,54 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$QueryResponse$SomeObject with EquatableMixin {
+class SomeQuery$QueryResponse$SomeObject extends JsonSerializable
+    with EquatableMixin {
   SomeQuery$QueryResponse$SomeObject();
 
   factory SomeQuery$QueryResponse$SomeObject.fromJson(
           Map<String, dynamic> json) =>
       _$SomeQuery$QueryResponse$SomeObjectFromJson(json);
 
-  String st;
+  String? st;
 
   @override
-  List<Object> get props => [st];
+  List<Object?> get props => [st];
   Map<String, dynamic> toJson() =>
       _$SomeQuery$QueryResponse$SomeObjectToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$QueryResponse$AnotherObject with EquatableMixin {
+class SomeQuery$QueryResponse$AnotherObject extends JsonSerializable
+    with EquatableMixin {
   SomeQuery$QueryResponse$AnotherObject();
 
   factory SomeQuery$QueryResponse$AnotherObject.fromJson(
           Map<String, dynamic> json) =>
       _$SomeQuery$QueryResponse$AnotherObjectFromJson(json);
 
-  String str;
+  String? str;
 
   @override
-  List<Object> get props => [str];
+  List<Object?> get props => [str];
   Map<String, dynamic> toJson() =>
       _$SomeQuery$QueryResponse$AnotherObjectToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$QueryResponse with EquatableMixin {
+class SomeQuery$QueryResponse extends JsonSerializable with EquatableMixin {
   SomeQuery$QueryResponse();
 
   factory SomeQuery$QueryResponse.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$QueryResponseFromJson(json);
 
-  String s;
+  String? s;
 
-  SomeQuery$QueryResponse$SomeObject o;
+  SomeQuery$QueryResponse$SomeObject? o;
 
-  List<SomeQuery$QueryResponse$AnotherObject> anotherObject;
+  List<SomeQuery$QueryResponse$AnotherObject?>? anotherObject;
 
   @override
-  List<Object> get props => [s, o, anotherObject];
+  List<Object?> get props => [s, o, anotherObject];
   Map<String, dynamic> toJson() => _$SomeQuery$QueryResponseToJson(this);
 }
 ''';

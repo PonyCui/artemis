@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:test/test.dart';
 
@@ -89,7 +87,7 @@ final LibraryDefinition libraryDefinition =
               FragmentName(name: r'PokemonPartsMixin')
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'PokemonData$_Query'),
@@ -97,30 +95,27 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'PokemonData$_Query$_pokemon'),
                   name: ClassPropertyName(name: r'pokemon'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'PokemonMixin$_evolution'),
             mixins: [FragmentName(name: r'PokemonNameMixin')],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         FragmentClassDefinition(
             name: FragmentName(name: r'PokemonMixin'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'id'),
-                  isNonNull: true,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'PokemonMixin$_evolution'),
                   name: ClassPropertyName(name: r'evolution'),
-                  isNonNull: false,
                   isResolveType: false)
             ]),
         FragmentClassDefinition(
@@ -129,7 +124,6 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'name'),
-                  isNonNull: false,
                   isResolveType: false)
             ]),
         FragmentClassDefinition(
@@ -138,12 +132,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'number'),
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'name'),
-                  isNonNull: false,
                   isResolveType: false)
             ])
       ],
@@ -160,39 +152,38 @@ final LibraryDefinition libraryDefinition =
               FragmentName(name: r'PokemonPartsMixin')
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'AllPokemonsData$_Query'),
             properties: [
               ClassProperty(
-                  type: TypeName(
-                      name: r'List<AllPokemonsData$Query$AllPokemons>'),
+                  type: ListOfTypeName(
+                      typeName: TypeName(
+                          name: r'AllPokemonsData$_Query$_allPokemons'),
+                      isNonNull: false),
                   name: ClassPropertyName(name: r'allPokemons'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'PokemonMixin$_evolution'),
             mixins: [FragmentName(name: r'PokemonNameMixin')],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         FragmentClassDefinition(
             name: FragmentName(name: r'PokemonMixin'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'id'),
-                  isNonNull: true,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'PokemonMixin$_evolution'),
                   name: ClassPropertyName(name: r'evolution'),
-                  isNonNull: false,
                   isResolveType: false)
             ]),
         FragmentClassDefinition(
@@ -201,7 +192,6 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'name'),
-                  isNonNull: false,
                   isResolveType: false)
             ]),
         FragmentClassDefinition(
@@ -210,12 +200,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'number'),
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'name'),
-                  isNonNull: false,
                   isResolveType: false)
             ])
       ],
@@ -224,6 +212,7 @@ final LibraryDefinition libraryDefinition =
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -231,19 +220,19 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 mixin PokemonMixin {
-  String id;
-  PokemonMixin$Evolution evolution;
+  late String id;
+  PokemonMixin$Evolution? evolution;
 }
 mixin PokemonNameMixin {
-  String name;
+  String? name;
 }
 mixin PokemonPartsMixin {
-  String number;
-  String name;
+  String? number;
+  String? name;
 }
 
 @JsonSerializable(explicitToJson: true)
-class PokemonData$Query$Pokemon
+class PokemonData$Query$Pokemon extends JsonSerializable
     with EquatableMixin, PokemonMixin, PokemonPartsMixin {
   PokemonData$Query$Pokemon();
 
@@ -251,38 +240,39 @@ class PokemonData$Query$Pokemon
       _$PokemonData$Query$PokemonFromJson(json);
 
   @override
-  List<Object> get props => [id, evolution, number, name];
+  List<Object?> get props => [id, evolution, number, name];
   Map<String, dynamic> toJson() => _$PokemonData$Query$PokemonToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class PokemonData$Query with EquatableMixin {
+class PokemonData$Query extends JsonSerializable with EquatableMixin {
   PokemonData$Query();
 
   factory PokemonData$Query.fromJson(Map<String, dynamic> json) =>
       _$PokemonData$QueryFromJson(json);
 
-  PokemonData$Query$Pokemon pokemon;
+  PokemonData$Query$Pokemon? pokemon;
 
   @override
-  List<Object> get props => [pokemon];
+  List<Object?> get props => [pokemon];
   Map<String, dynamic> toJson() => _$PokemonData$QueryToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class PokemonMixin$Evolution with EquatableMixin, PokemonNameMixin {
+class PokemonMixin$Evolution extends JsonSerializable
+    with EquatableMixin, PokemonNameMixin {
   PokemonMixin$Evolution();
 
   factory PokemonMixin$Evolution.fromJson(Map<String, dynamic> json) =>
       _$PokemonMixin$EvolutionFromJson(json);
 
   @override
-  List<Object> get props => [name];
+  List<Object?> get props => [name];
   Map<String, dynamic> toJson() => _$PokemonMixin$EvolutionToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class AllPokemonsData$Query$AllPokemons
+class AllPokemonsData$Query$AllPokemons extends JsonSerializable
     with EquatableMixin, PokemonMixin, PokemonPartsMixin {
   AllPokemonsData$Query$AllPokemons();
 
@@ -291,22 +281,22 @@ class AllPokemonsData$Query$AllPokemons
       _$AllPokemonsData$Query$AllPokemonsFromJson(json);
 
   @override
-  List<Object> get props => [id, evolution, number, name];
+  List<Object?> get props => [id, evolution, number, name];
   Map<String, dynamic> toJson() =>
       _$AllPokemonsData$Query$AllPokemonsToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class AllPokemonsData$Query with EquatableMixin {
+class AllPokemonsData$Query extends JsonSerializable with EquatableMixin {
   AllPokemonsData$Query();
 
   factory AllPokemonsData$Query.fromJson(Map<String, dynamic> json) =>
       _$AllPokemonsData$QueryFromJson(json);
 
-  List<AllPokemonsData$Query$AllPokemons> allPokemons;
+  List<AllPokemonsData$Query$AllPokemons?>? allPokemons;
 
   @override
-  List<Object> get props => [allPokemons];
+  List<Object?> get props => [allPokemons];
   Map<String, dynamic> toJson() => _$AllPokemonsData$QueryToJson(this);
 }
 ''';

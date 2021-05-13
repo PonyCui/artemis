@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/data/enum_value_definition.dart';
 import 'package:test/test.dart';
@@ -63,30 +61,31 @@ final LibraryDefinition libraryDefinition =
             name: ClassName(name: r'SearchArticles$_Query$_Article'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'id'),
-                  isNonNull: true,
                   isResolveType: false),
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'title'),
-                  isNonNull: true,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'SearchArticles$_Query'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'List<SearchArticles$Query$Article>'),
+                  type: ListOfTypeName(
+                      typeName: TypeName(
+                          name: r'SearchArticles$_Query$_Article',
+                          isNonNull: true),
+                      isNonNull: false),
                   name: ClassPropertyName(name: r'articles'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'ArticleTitleWhereConditions'),
@@ -97,29 +96,27 @@ final LibraryDefinition libraryDefinition =
                   annotations: [
                     r'''JsonKey(name: 'operator', unknownEnumValue: SQLOperator.artemisUnknown)'''
                   ],
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'value'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: true)
       ],
       inputs: [
         QueryInput(
             type: TypeName(name: r'ArticleTitleWhereConditions'),
-            name: QueryInputName(name: r'titleWhere'),
-            isNonNull: false)
+            name: QueryInputName(name: r'titleWhere'))
       ],
       generateHelpers: false,
       suffix: r'Query')
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -127,49 +124,50 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class SearchArticles$Query$Article with EquatableMixin {
+class SearchArticles$Query$Article extends JsonSerializable
+    with EquatableMixin {
   SearchArticles$Query$Article();
 
   factory SearchArticles$Query$Article.fromJson(Map<String, dynamic> json) =>
       _$SearchArticles$Query$ArticleFromJson(json);
 
-  String id;
+  late String id;
 
-  String title;
+  late String title;
 
   @override
-  List<Object> get props => [id, title];
+  List<Object?> get props => [id, title];
   Map<String, dynamic> toJson() => _$SearchArticles$Query$ArticleToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class SearchArticles$Query with EquatableMixin {
+class SearchArticles$Query extends JsonSerializable with EquatableMixin {
   SearchArticles$Query();
 
   factory SearchArticles$Query.fromJson(Map<String, dynamic> json) =>
       _$SearchArticles$QueryFromJson(json);
 
-  List<SearchArticles$Query$Article> articles;
+  List<SearchArticles$Query$Article>? articles;
 
   @override
-  List<Object> get props => [articles];
+  List<Object?> get props => [articles];
   Map<String, dynamic> toJson() => _$SearchArticles$QueryToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class ArticleTitleWhereConditions with EquatableMixin {
+class ArticleTitleWhereConditions extends JsonSerializable with EquatableMixin {
   ArticleTitleWhereConditions({this.kw$operator, this.value});
 
   factory ArticleTitleWhereConditions.fromJson(Map<String, dynamic> json) =>
       _$ArticleTitleWhereConditionsFromJson(json);
 
   @JsonKey(name: 'operator', unknownEnumValue: SQLOperator.artemisUnknown)
-  SQLOperator kw$operator;
+  SQLOperator? kw$operator;
 
-  String value;
+  String? value;
 
   @override
-  List<Object> get props => [kw$operator, value];
+  List<Object?> get props => [kw$operator, value];
   Map<String, dynamic> toJson() => _$ArticleTitleWhereConditionsToJson(this);
 }
 

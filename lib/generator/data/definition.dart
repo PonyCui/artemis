@@ -1,9 +1,6 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data_printer.dart';
 import 'package:artemis/generator/helpers.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 /// Abstract definition of an entity.
 abstract class Definition extends Equatable with DataPrinter {
@@ -11,7 +8,7 @@ abstract class Definition extends Equatable with DataPrinter {
   final Name name;
 
   /// Instantiate a definition.
-  Definition({@required this.name});
+  Definition({required this.name});
 }
 
 /// Abstract name of an entity.
@@ -20,7 +17,7 @@ abstract class Name extends Equatable with DataPrinter {
   final String name;
 
   /// Instantiate a name.
-  Name({this.name}) : assert(hasValue(name));
+  const Name({required this.name});
 
   /// Name suitable for code printing
   String get namePrintable => normalize(name);
@@ -29,7 +26,7 @@ abstract class Name extends Equatable with DataPrinter {
   String get fragmentClassNamePrintable => fragmentClassNameNormalize(name);
 
   /// type name safe to use for dart
-  String get dartTypeSafe => namePrintable.replaceAll(RegExp(r'[<>]'), '');
+  String get dartTypeSafe => namePrintable.replaceAll(RegExp(r'[<>?]'), '');
 
   /// Name normalization function
   String normalize(String name) => normalizeName(name);

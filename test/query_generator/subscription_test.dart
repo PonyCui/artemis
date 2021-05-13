@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/data/enum_value_definition.dart';
 import 'package:test/test.dart';
@@ -96,38 +94,35 @@ final LibraryDefinition libraryDefinition =
             name: ClassName(name: r'NewUserSub$_Subscription$_User'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'firstName'),
-                  isNonNull: true,
                   isResolveType: false),
               ClassProperty(
-                  type: TypeName(name: r'String'),
+                  type: TypeName(name: r'String', isNonNull: true),
                   name: ClassPropertyName(name: r'lastName'),
-                  isNonNull: true,
                   isResolveType: false),
               ClassProperty(
-                  type: TypeName(name: r'UserType'),
+                  type: TypeName(name: r'UserType', isNonNull: true),
                   name: ClassPropertyName(name: r'userType'),
                   annotations: [
                     r'JsonKey(unknownEnumValue: UserType.artemisUnknown)'
                   ],
-                  isNonNull: true,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'NewUserSub$_Subscription'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'NewUserSub$_Subscription$_User'),
+                  type: TypeName(
+                      name: r'NewUserSub$_Subscription$_User', isNonNull: true),
                   name: ClassPropertyName(name: r'newUser'),
-                  isNonNull: true,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false)
       ],
       generateHelpers: false,
@@ -135,6 +130,7 @@ final LibraryDefinition libraryDefinition =
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -142,35 +138,36 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class NewUserSub$Subscription$User with EquatableMixin {
+class NewUserSub$Subscription$User extends JsonSerializable
+    with EquatableMixin {
   NewUserSub$Subscription$User();
 
   factory NewUserSub$Subscription$User.fromJson(Map<String, dynamic> json) =>
       _$NewUserSub$Subscription$UserFromJson(json);
 
-  String firstName;
+  late String firstName;
 
-  String lastName;
+  late String lastName;
 
   @JsonKey(unknownEnumValue: UserType.artemisUnknown)
-  UserType userType;
+  late UserType userType;
 
   @override
-  List<Object> get props => [firstName, lastName, userType];
+  List<Object?> get props => [firstName, lastName, userType];
   Map<String, dynamic> toJson() => _$NewUserSub$Subscription$UserToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class NewUserSub$Subscription with EquatableMixin {
+class NewUserSub$Subscription extends JsonSerializable with EquatableMixin {
   NewUserSub$Subscription();
 
   factory NewUserSub$Subscription.fromJson(Map<String, dynamic> json) =>
       _$NewUserSub$SubscriptionFromJson(json);
 
-  NewUserSub$Subscription$User newUser;
+  late NewUserSub$Subscription$User newUser;
 
   @override
-  List<Object> get props => [newUser];
+  List<Object?> get props => [newUser];
   Map<String, dynamic> toJson() => _$NewUserSub$SubscriptionToJson(this);
 }
 

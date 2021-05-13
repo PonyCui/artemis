@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 
 /// Define an exception thrown when duplicated classes names were generated.
@@ -65,6 +63,33 @@ class QueryGlobsOutputException implements Exception {
       '''One of your `queries_glob` configuration contains the path to the `output` file!
 Change `schema` or `output` location and try again.
 ''';
+}
+
+/// Define an exception thrown when Artemis does not find asset files
+class MissingFilesException implements Exception {
+  /// glob pattern which was used
+  final String globPattern;
+
+  /// Define an exception thrown when Artemis does not find asset files
+  MissingFilesException(this.globPattern);
+
+  @override
+  String toString() {
+    return 'Missing files for $globPattern';
+  }
+}
+
+/// Define an exception thrown when Artemis does not find required config params
+class MissingBuildConfigurationException implements Exception {
+  /// missing config option name
+  final String name;
+
+  /// Define an exception thrown when Artemis does not find required config params
+  MissingBuildConfigurationException(this.name);
+
+  @override
+  String toString() =>
+      'Missing `$name` configuration option. Cehck `build.yaml` configuration';
 }
 
 /// Define an exception thrown when Artemis find a scalar on schema but it's

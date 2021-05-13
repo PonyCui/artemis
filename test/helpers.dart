@@ -1,11 +1,8 @@
-// @dart = 2.8
-
 import 'package:artemis/builder.dart';
 import 'package:artemis/generator/data/data.dart';
 import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:test/test.dart';
 import 'package:collection/collection.dart';
 
@@ -13,19 +10,18 @@ final bool Function(Iterable, Iterable) listEquals =
     const DeepCollectionEquality.unordered().equals;
 
 Future testGenerator({
-  @required String query,
-  @required LibraryDefinition libraryDefinition,
-  @required String generatedFile,
-  @required String schema,
+  required String query,
+  required LibraryDefinition libraryDefinition,
+  required String generatedFile,
+  required String schema,
   String namingScheme = 'pathedWithTypes',
+  bool appendTypeName = false,
   bool generateHelpers = false,
   Map<String, dynamic> builderOptionsMap = const {},
-  Map<String, dynamic> sourceAssetsMap = const {},
-  Map<String, dynamic> outputsMap = const {},
+  Map<String, Object> sourceAssetsMap = const {},
+  Map<String, Object> outputsMap = const {},
 }) async {
   Logger.root.level = Level.INFO;
-
-  assert((schema) != null);
 
   final anotherBuilder = graphQLQueryBuilder(BuilderOptions({
     if (!generateHelpers) 'generate_helpers': false,
@@ -35,6 +31,7 @@ Future testGenerator({
         'queries_glob': 'queries/**.graphql',
         'output': 'lib/query.graphql.dart',
         'naming_scheme': namingScheme,
+        'append_type_name': appendTypeName,
       }
     ],
     ...builderOptionsMap,
@@ -61,15 +58,12 @@ Future testGenerator({
 }
 
 Future testNaming({
-  @required String query,
-  @required String schema,
-  @required List<String> expectedNames,
-  @required String namingScheme,
+  required String query,
+  required String schema,
+  required List<String> expectedNames,
+  required String namingScheme,
   bool shouldFail = false,
 }) {
-  assert((schema) != null);
-  Logger.root.level = Level.ALL;
-
   final anotherBuilder = graphQLQueryBuilder(BuilderOptions({
     'generate_helpers': false,
     'schema_mapping': [

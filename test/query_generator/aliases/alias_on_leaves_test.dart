@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/data/enum_value_definition.dart';
 import 'package:test/test.dart';
@@ -74,11 +72,10 @@ final LibraryDefinition libraryDefinition =
                   annotations: [
                     r'JsonKey(unknownEnumValue: MyEnum.artemisUnknown)'
                   ],
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'SomeQuery$_Response'),
@@ -86,16 +83,14 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r'thisIsAString'),
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'SomeQuery$_Response$_SomeObject'),
                   name: ClassPropertyName(name: r'o'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false)
       ],
       generateHelpers: false,
@@ -103,6 +98,7 @@ final LibraryDefinition libraryDefinition =
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -110,33 +106,34 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$Response$SomeObject with EquatableMixin {
+class SomeQuery$Response$SomeObject extends JsonSerializable
+    with EquatableMixin {
   SomeQuery$Response$SomeObject();
 
   factory SomeQuery$Response$SomeObject.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$Response$SomeObjectFromJson(json);
 
   @JsonKey(unknownEnumValue: MyEnum.artemisUnknown)
-  MyEnum thisIsAnEnum;
+  MyEnum? thisIsAnEnum;
 
   @override
-  List<Object> get props => [thisIsAnEnum];
+  List<Object?> get props => [thisIsAnEnum];
   Map<String, dynamic> toJson() => _$SomeQuery$Response$SomeObjectToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$Response with EquatableMixin {
+class SomeQuery$Response extends JsonSerializable with EquatableMixin {
   SomeQuery$Response();
 
   factory SomeQuery$Response.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$ResponseFromJson(json);
 
-  String thisIsAString;
+  String? thisIsAString;
 
-  SomeQuery$Response$SomeObject o;
+  SomeQuery$Response$SomeObject? o;
 
   @override
-  List<Object> get props => [thisIsAString, o];
+  List<Object?> get props => [thisIsAString, o];
   Map<String, dynamic> toJson() => _$SomeQuery$ResponseToJson(this);
 }
 

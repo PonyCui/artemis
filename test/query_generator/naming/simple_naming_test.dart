@@ -1,7 +1,4 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
-import 'package:artemis/generator/data/enum_value_definition.dart';
 import 'package:test/test.dart';
 
 import '../../helpers.dart';
@@ -9,7 +6,7 @@ import '../../helpers.dart';
 void main() {
   group('Simple naming', () {
     test(
-      'Casing will be converted accordingly (and JsonKey names willb e populated accordingly)',
+      'Casing will be converted accordingly (and JsonKey names will be populated accordingly)',
       () async => testGenerator(
         query: r'''
           query ClientEventsData {
@@ -65,37 +62,37 @@ final LibraryDefinition libraryDefinition =
             name: ClassName(name: r'ClientEventItem'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'int'),
+                  type: TypeName(name: r'int', isNonNull: true),
                   name: ClassPropertyName(name: r'type'),
-                  isNonNull: true,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'ClientEventPage'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'List<ClientEventItem>'),
+                  type: ListOfTypeName(
+                      typeName:
+                          TypeName(name: r'ClientEventItem', isNonNull: true),
+                      isNonNull: true),
                   name: ClassPropertyName(name: r'items'),
-                  isNonNull: true,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'ClientEventsData$_Query'),
             properties: [
               ClassProperty(
-                  type: TypeName(name: r'ClientEventPage'),
+                  type: TypeName(name: r'ClientEventPage', isNonNull: true),
                   name: ClassPropertyName(name: r'clientEvents'),
-                  isNonNull: true,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false)
       ],
       generateHelpers: true,
@@ -103,6 +100,7 @@ final LibraryDefinition libraryDefinition =
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -111,87 +109,89 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class ClientEventItem with EquatableMixin {
+class ClientEventItem extends JsonSerializable with EquatableMixin {
   ClientEventItem();
 
   factory ClientEventItem.fromJson(Map<String, dynamic> json) =>
       _$ClientEventItemFromJson(json);
 
-  int type;
+  late int type;
 
   @override
-  List<Object> get props => [type];
+  List<Object?> get props => [type];
   Map<String, dynamic> toJson() => _$ClientEventItemToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class ClientEventPage with EquatableMixin {
+class ClientEventPage extends JsonSerializable with EquatableMixin {
   ClientEventPage();
 
   factory ClientEventPage.fromJson(Map<String, dynamic> json) =>
       _$ClientEventPageFromJson(json);
 
-  List<ClientEventItem> items;
+  late List<ClientEventItem> items;
 
   @override
-  List<Object> get props => [items];
+  List<Object?> get props => [items];
   Map<String, dynamic> toJson() => _$ClientEventPageToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class ClientEventsData$Query with EquatableMixin {
+class ClientEventsData$Query extends JsonSerializable with EquatableMixin {
   ClientEventsData$Query();
 
   factory ClientEventsData$Query.fromJson(Map<String, dynamic> json) =>
       _$ClientEventsData$QueryFromJson(json);
 
-  ClientEventPage clientEvents;
+  late ClientEventPage clientEvents;
 
   @override
-  List<Object> get props => [clientEvents];
+  List<Object?> get props => [clientEvents];
   Map<String, dynamic> toJson() => _$ClientEventsData$QueryToJson(this);
 }
+
+final CLIENT_EVENTS_DATA_QUERY_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.query,
+      name: NameNode(value: 'ClientEventsData'),
+      variableDefinitions: [],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: [
+        FieldNode(
+            name: NameNode(value: 'clientEvents'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                  name: NameNode(value: 'items'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'type'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null)
+                  ]))
+            ]))
+      ]))
+]);
 
 class ClientEventsDataQuery
     extends GraphQLQuery<ClientEventsData$Query, JsonSerializable> {
   ClientEventsDataQuery();
 
   @override
-  final DocumentNode document = DocumentNode(definitions: [
-    OperationDefinitionNode(
-        type: OperationType.query,
-        name: NameNode(value: 'ClientEventsData'),
-        variableDefinitions: [],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: [
-          FieldNode(
-              name: NameNode(value: 'clientEvents'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 'items'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'type'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
-                    ]))
-              ]))
-        ]))
-  ]);
+  final DocumentNode document = CLIENT_EVENTS_DATA_QUERY_DOCUMENT;
 
   @override
   final String operationName = 'ClientEventsData';
 
   @override
-  List<Object> get props => [document, operationName];
+  List<Object?> get props => [document, operationName];
   @override
   ClientEventsData$Query parse(Map<String, dynamic> json) =>
       ClientEventsData$Query.fromJson(json);

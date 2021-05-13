@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:test/test.dart';
 
@@ -66,11 +64,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r's'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'SomeQuery$_QueryRoot'),
@@ -78,11 +75,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'SomeQuery$_QueryRoot$_SomeObject'),
                   name: ClassPropertyName(name: r'o'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'Input'),
@@ -90,11 +86,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'SubInput'),
                   name: ClassPropertyName(name: r's'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: true),
         ClassDefinition(
             name: ClassName(name: r'SubInput'),
@@ -102,26 +97,24 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r's'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: true)
       ],
       inputs: [
         QueryInput(
-            type: TypeName(name: r'Input'),
-            name: QueryInputName(name: r'input'),
-            isNonNull: true)
+            type: TypeName(name: r'Input', isNonNull: true),
+            name: QueryInputName(name: r'input'))
       ],
       generateHelpers: true,
       suffix: r'Query')
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
-import 'package:meta/meta.dart';
 import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -129,114 +122,117 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$QueryRoot$SomeObject with EquatableMixin {
+class SomeQuery$QueryRoot$SomeObject extends JsonSerializable
+    with EquatableMixin {
   SomeQuery$QueryRoot$SomeObject();
 
   factory SomeQuery$QueryRoot$SomeObject.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$QueryRoot$SomeObjectFromJson(json);
 
-  String s;
+  String? s;
 
   @override
-  List<Object> get props => [s];
+  List<Object?> get props => [s];
   Map<String, dynamic> toJson() => _$SomeQuery$QueryRoot$SomeObjectToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$QueryRoot with EquatableMixin {
+class SomeQuery$QueryRoot extends JsonSerializable with EquatableMixin {
   SomeQuery$QueryRoot();
 
   factory SomeQuery$QueryRoot.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$QueryRootFromJson(json);
 
-  SomeQuery$QueryRoot$SomeObject o;
+  SomeQuery$QueryRoot$SomeObject? o;
 
   @override
-  List<Object> get props => [o];
+  List<Object?> get props => [o];
   Map<String, dynamic> toJson() => _$SomeQuery$QueryRootToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class Input with EquatableMixin {
+class Input extends JsonSerializable with EquatableMixin {
   Input({this.s});
 
   factory Input.fromJson(Map<String, dynamic> json) => _$InputFromJson(json);
 
-  SubInput s;
+  SubInput? s;
 
   @override
-  List<Object> get props => [s];
+  List<Object?> get props => [s];
   Map<String, dynamic> toJson() => _$InputToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class SubInput with EquatableMixin {
+class SubInput extends JsonSerializable with EquatableMixin {
   SubInput({this.s});
 
   factory SubInput.fromJson(Map<String, dynamic> json) =>
       _$SubInputFromJson(json);
 
-  String s;
+  String? s;
 
   @override
-  List<Object> get props => [s];
+  List<Object?> get props => [s];
   Map<String, dynamic> toJson() => _$SubInputToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
 class SomeQueryArguments extends JsonSerializable with EquatableMixin {
-  SomeQueryArguments({@required this.input});
+  SomeQueryArguments({required this.input});
 
   @override
   factory SomeQueryArguments.fromJson(Map<String, dynamic> json) =>
       _$SomeQueryArgumentsFromJson(json);
 
-  final Input input;
+  late Input input;
 
   @override
-  List<Object> get props => [input];
+  List<Object?> get props => [input];
   @override
   Map<String, dynamic> toJson() => _$SomeQueryArgumentsToJson(this);
 }
 
+final SOME_QUERY_QUERY_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.query,
+      name: NameNode(value: 'some_query'),
+      variableDefinitions: [
+        VariableDefinitionNode(
+            variable: VariableNode(name: NameNode(value: 'input')),
+            type:
+                NamedTypeNode(name: NameNode(value: 'Input'), isNonNull: true),
+            defaultValue: DefaultValueNode(value: null),
+            directives: [])
+      ],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: [
+        FieldNode(
+            name: NameNode(value: 'o'),
+            alias: null,
+            arguments: [
+              ArgumentNode(
+                  name: NameNode(value: 'input'),
+                  value: VariableNode(name: NameNode(value: 'input')))
+            ],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                  name: NameNode(value: 's'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null)
+            ]))
+      ]))
+]);
+
 class SomeQueryQuery
     extends GraphQLQuery<SomeQuery$QueryRoot, SomeQueryArguments> {
-  SomeQueryQuery({this.variables});
+  SomeQueryQuery({required this.variables});
 
   @override
-  final DocumentNode document = DocumentNode(definitions: [
-    OperationDefinitionNode(
-        type: OperationType.query,
-        name: NameNode(value: 'some_query'),
-        variableDefinitions: [
-          VariableDefinitionNode(
-              variable: VariableNode(name: NameNode(value: 'input')),
-              type: NamedTypeNode(
-                  name: NameNode(value: 'Input'), isNonNull: true),
-              defaultValue: DefaultValueNode(value: null),
-              directives: [])
-        ],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: [
-          FieldNode(
-              name: NameNode(value: 'o'),
-              alias: null,
-              arguments: [
-                ArgumentNode(
-                    name: NameNode(value: 'input'),
-                    value: VariableNode(name: NameNode(value: 'input')))
-              ],
-              directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 's'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null)
-              ]))
-        ]))
-  ]);
+  final DocumentNode document = SOME_QUERY_QUERY_DOCUMENT;
 
   @override
   final String operationName = 'some_query';
@@ -245,7 +241,7 @@ class SomeQueryQuery
   final SomeQueryArguments variables;
 
   @override
-  List<Object> get props => [document, operationName, variables];
+  List<Object?> get props => [document, operationName, variables];
   @override
   SomeQuery$QueryRoot parse(Map<String, dynamic> json) =>
       SomeQuery$QueryRoot.fromJson(json);

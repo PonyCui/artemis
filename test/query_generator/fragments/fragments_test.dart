@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:test/test.dart';
 
@@ -48,19 +46,17 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'String'),
                   name: ClassPropertyName(name: r's'),
-                  isNonNull: false,
                   isResolveType: false),
               ClassProperty(
                   type: TypeName(name: r'int'),
                   name: ClassPropertyName(name: r'i'),
-                  isNonNull: false,
                   isResolveType: false)
             ]),
         ClassDefinition(
             name: ClassName(name: r'SomeQuery$_SomeObject'),
             mixins: [FragmentName(name: r'MyFragmentMixin')],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false)
       ],
       generateHelpers: false,
@@ -68,6 +64,7 @@ final LibraryDefinition libraryDefinition =
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -75,19 +72,20 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 mixin MyFragmentMixin {
-  String s;
-  int i;
+  String? s;
+  int? i;
 }
 
 @JsonSerializable(explicitToJson: true)
-class SomeQuery$SomeObject with EquatableMixin, MyFragmentMixin {
+class SomeQuery$SomeObject extends JsonSerializable
+    with EquatableMixin, MyFragmentMixin {
   SomeQuery$SomeObject();
 
   factory SomeQuery$SomeObject.fromJson(Map<String, dynamic> json) =>
       _$SomeQuery$SomeObjectFromJson(json);
 
   @override
-  List<Object> get props => [s, i];
+  List<Object?> get props => [s, i];
   Map<String, dynamic> toJson() => _$SomeQuery$SomeObjectToJson(this);
 }
 ''';

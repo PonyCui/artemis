@@ -1,5 +1,3 @@
-// @dart = 2.8
-
 import 'package:artemis/generator/data/data.dart';
 import 'package:artemis/generator/data/enum_value_definition.dart';
 import 'package:test/test.dart';
@@ -67,11 +65,10 @@ final LibraryDefinition libraryDefinition =
                   annotations: [
                     r'JsonKey(unknownEnumValue: MyEnum.artemisUnknown)'
                   ],
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false),
         ClassDefinition(
             name: ClassName(name: r'Custom$_QueryRoot'),
@@ -79,11 +76,10 @@ final LibraryDefinition libraryDefinition =
               ClassProperty(
                   type: TypeName(name: r'Custom$_QueryRoot$_QueryResponse'),
                   name: ClassPropertyName(name: r'q'),
-                  isNonNull: false,
                   isResolveType: false)
             ],
             factoryPossibilities: {},
-            typeNameField: TypeName(name: r'__typename'),
+            typeNameField: ClassPropertyName(name: r'__typename'),
             isInput: false)
       ],
       generateHelpers: false,
@@ -91,6 +87,7 @@ final LibraryDefinition libraryDefinition =
 ]);
 
 const generatedFile = r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart = 2.12
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -98,31 +95,32 @@ import 'package:gql/ast.dart';
 part 'query.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Custom$QueryRoot$QueryResponse with EquatableMixin {
+class Custom$QueryRoot$QueryResponse extends JsonSerializable
+    with EquatableMixin {
   Custom$QueryRoot$QueryResponse();
 
   factory Custom$QueryRoot$QueryResponse.fromJson(Map<String, dynamic> json) =>
       _$Custom$QueryRoot$QueryResponseFromJson(json);
 
   @JsonKey(unknownEnumValue: MyEnum.artemisUnknown)
-  MyEnum e;
+  MyEnum? e;
 
   @override
-  List<Object> get props => [e];
+  List<Object?> get props => [e];
   Map<String, dynamic> toJson() => _$Custom$QueryRoot$QueryResponseToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class Custom$QueryRoot with EquatableMixin {
+class Custom$QueryRoot extends JsonSerializable with EquatableMixin {
   Custom$QueryRoot();
 
   factory Custom$QueryRoot.fromJson(Map<String, dynamic> json) =>
       _$Custom$QueryRootFromJson(json);
 
-  Custom$QueryRoot$QueryResponse q;
+  Custom$QueryRoot$QueryResponse? q;
 
   @override
-  List<Object> get props => [q];
+  List<Object?> get props => [q];
   Map<String, dynamic> toJson() => _$Custom$QueryRootToJson(this);
 }
 
